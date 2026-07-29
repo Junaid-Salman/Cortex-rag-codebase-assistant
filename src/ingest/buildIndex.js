@@ -2,7 +2,7 @@ import "dotenv/config";
 import { createClient } from "@supabase/supabase-js";
 import { OllamaEmbeddings } from "@langchain/ollama";
 import { SupabaseVectorStore } from "@langchain/community/vectorstores/supabase";
-import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
+import { chunkCode } from "./chunkCode.js";
 import { Document } from "@langchain/core/documents";
 import fs from "fs";
 import path from "path";
@@ -18,25 +18,24 @@ export async function buildIndex(repoDir, repoName) {
   const files = await loadRepo(repoDir);
   console.log(`Found ${files.length} files in ${repoDir}`);
 
-  const splitter = new RecursiveCharacterTextSplitter({
-    chunkSize: 800,
-    chunkOverlap: 100,
-  });
-
   const docs = [];
 
   for (const file of files) {
     const content = fs.readFileSync(file, "utf-8");
-    const chunks = await splitter.splitText(content);
+    const source = path.relative(repoDir, file);
+    const chunks = chunkCode(content, file);
 
     chunks.forEach((chunk, i) => {
       docs.push(
         new Document({
-          pageContent: chunk,
+          pageContent: chunk.text,
           metadata: {
-            source: path.relative(repoDir, file),
+            source,
             repo: repoName,
             chunkIndex: i,
+            nodeType: chunk.type,
+            startLine: chunk.startLine,
+            endLine: chunk.endLine,
           },
         }),
       );
@@ -52,6 +51,16 @@ export async function buildIndex(repoDir, repoName) {
     process.env.SUPABASE_URL,
     process.env.SUPABASE_SERVICE_KEY,
   );
+
+  // Clear any existing chunks under this repo tag first, so re-indexing
+  // doesn't silently accumulate stale/duplicate rows on top of old ones.
+  const { error: deleteError } = await client
+    .from("code_chunks")
+    .delete()
+    .eq("metadata->>repo", repoName);
+  if (deleteError) {
+    throw new Error(`Failed to clear existing chunks for repo "${repoName}": ${deleteError.message}`);
+  }
 
   await SupabaseVectorStore.fromDocuments(docs, embeddings, {
     client,

@@ -2,7 +2,7 @@ import "dotenv/config";
 import { createClient } from "@supabase/supabase-js";
 import { OllamaEmbeddings, ChatOllama } from "@langchain/ollama";
 import { SupabaseVectorStore } from "@langchain/community/vectorstores/supabase";
-import { ChatPromptTemplate } from "@langchain/core/prompts";
+import { ChatPromptTemplate, PromptTemplate } from "@langchain/core/prompts";
 import { createStuffDocumentsChain } from "@langchain/classic/chains/combine_documents";
 import { createRetrievalChain } from "@langchain/classic/chains/retrieval";
 
@@ -44,9 +44,17 @@ Context:
 Question: {input}
 `);
 
+  // Without this, createStuffDocumentsChain only stuffs each chunk's
+  // pageContent into {context} — metadata.source never reaches the model,
+  // so "cite the file path" above would just be guessed from convention.
+  const documentPrompt = PromptTemplate.fromTemplate(
+    "File: {source}\n{page_content}",
+  );
+
   const combineDocsChain = await createStuffDocumentsChain({
     llm: model,
     prompt,
+    documentPrompt,
   });
   const chain = await createRetrievalChain({ retriever, combineDocsChain });
 
