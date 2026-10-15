@@ -1,0 +1,3222 @@
+{
+  "dataset": "/home/codingcops/Documents/Projects/RAG/Cortex/src/eval/dataset.json",
+  "status": "reviewed",
+  "repo": "social-network",
+  "ks": [
+    5,
+    10
+  ],
+  "runs": {
+    "5": {
+      "naive": [
+        {
+          "id": "s01",
+          "type": "semantic",
+          "retrieved": [
+            "model/User.js",
+            "controller/authController.js",
+            "config/db.js"
+          ],
+          "expected": [
+            "model/User.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "rr": 1
+        },
+        {
+          "id": "s02",
+          "type": "semantic",
+          "retrieved": [
+            "middleware/authMiddleware.js",
+            "controller/authController.js",
+            "routes/likeRoutes.js"
+          ],
+          "expected": [
+            "middleware/authMiddleware.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "rr": 1
+        },
+        {
+          "id": "s03",
+          "type": "semantic",
+          "retrieved": [
+            "controller/authController.js",
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "controller/followController.js"
+          ],
+          "expected": [
+            "controller/authController.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.25,
+          "rr": 1
+        },
+        {
+          "id": "s04",
+          "type": "semantic",
+          "retrieved": [
+            "config/db.js",
+            "model/User.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js"
+          ],
+          "expected": [
+            "config/db.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.2,
+          "rr": 1
+        },
+        {
+          "id": "s05",
+          "type": "semantic",
+          "retrieved": [
+            "routes/commentRoutes.js",
+            "controller/postController.js",
+            "model/Comment.js"
+          ],
+          "expected": [
+            "routes/commentRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "rr": 1
+        },
+        {
+          "id": "s06",
+          "type": "semantic",
+          "retrieved": [
+            "controller/postController.js",
+            "routes/postRoutes.js",
+            "routes/likeRoutes.js"
+          ],
+          "expected": [
+            "controller/postController.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "rr": 1
+        },
+        {
+          "id": "s07",
+          "type": "semantic",
+          "retrieved": [
+            "model/Comment.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "model/User.js",
+            "routes/likeRoutes.js"
+          ],
+          "expected": [
+            "model/Comment.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.2,
+          "rr": 1
+        },
+        {
+          "id": "s08",
+          "type": "semantic",
+          "retrieved": [
+            "routes/commentRoutes.js",
+            "server.js",
+            "routes/authRoutes.js",
+            "routes/postRoutes.js",
+            "routes/followRoutes.js"
+          ],
+          "expected": [
+            "server.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.2,
+          "rr": 0.5
+        },
+        {
+          "id": "t01",
+          "type": "structural",
+          "retrieved": [
+            "middleware/authMiddleware.js",
+            "routes/commentRoutes.js",
+            "routes/postRoutes.js",
+            "routes/likeRoutes.js",
+            "model/User.js"
+          ],
+          "expected": [
+            "middleware/authMiddleware.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 0.8,
+          "precision": 0.8,
+          "rr": 1
+        },
+        {
+          "id": "t02",
+          "type": "structural",
+          "retrieved": [
+            "controller/postController.js",
+            "routes/likeRoutes.js"
+          ],
+          "expected": [
+            "controller/postController.js",
+            "routes/postRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 0.5,
+          "precision": 0.5,
+          "rr": 1
+        },
+        {
+          "id": "t03",
+          "type": "structural",
+          "retrieved": [
+            "controller/followController.js",
+            "controller/postController.js",
+            "routes/commentRoutes.js"
+          ],
+          "expected": [
+            "controller/followController.js",
+            "routes/followRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 0.5,
+          "precision": 0.3333333333333333,
+          "rr": 1
+        },
+        {
+          "id": "t04",
+          "type": "structural",
+          "retrieved": [
+            "config/db.js",
+            "server.js",
+            "model/User.js",
+            "routes/authRoutes.js",
+            "routes/commentRoutes.js"
+          ],
+          "expected": [
+            "config/db.js",
+            "server.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.4,
+          "rr": 1
+        },
+        {
+          "id": "t05",
+          "type": "structural",
+          "retrieved": [
+            "server.js",
+            "routes/followRoutes.js",
+            "routes/authRoutes.js",
+            "routes/postRoutes.js",
+            "routes/commentRoutes.js"
+          ],
+          "expected": [
+            "routes/followRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.2,
+          "rr": 0.5
+        },
+        {
+          "id": "t06",
+          "type": "structural",
+          "retrieved": [
+            "model/User.js",
+            "controller/authController.js",
+            "routes/commentRoutes.js",
+            "model/Post.js",
+            "controller/followController.js"
+          ],
+          "expected": [
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "controller/authController.js",
+            "controller/postController.js",
+            "controller/followController.js",
+            "model/Comment.js",
+            "model/Post.js",
+            "model/FollowRequest.js"
+          ],
+          "hit": 1,
+          "recall": 0.45454545454545453,
+          "precision": 1,
+          "rr": 1
+        },
+        {
+          "id": "t07",
+          "type": "structural",
+          "retrieved": [
+            "routes/authRoutes.js",
+            "routes/followRoutes.js",
+            "routes/postRoutes.js",
+            "model/User.js",
+            "middleware/authMiddleware.js"
+          ],
+          "expected": [
+            "controller/authController.js",
+            "routes/authRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 0.5,
+          "precision": 0.2,
+          "rr": 1
+        },
+        {
+          "id": "t08",
+          "type": "structural",
+          "retrieved": [
+            "middleware/authMiddleware.js",
+            "controller/authController.js",
+            "controller/followController.js",
+            "routes/authRoutes.js"
+          ],
+          "expected": [
+            "middleware/authMiddleware.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.25,
+          "rr": 1
+        },
+        {
+          "id": "c01",
+          "type": "cross-file",
+          "retrieved": [
+            "controller/postController.js",
+            "routes/likeRoutes.js",
+            "routes/commentRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "expected": [
+            "routes/postRoutes.js",
+            "controller/postController.js",
+            "middleware/authMiddleware.js",
+            "model/Post.js"
+          ],
+          "hit": 1,
+          "recall": 0.5,
+          "precision": 0.5,
+          "rr": 1
+        },
+        {
+          "id": "c02",
+          "type": "cross-file",
+          "retrieved": [
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/Post.js"
+          ],
+          "expected": [
+            "controller/postController.js",
+            "model/User.js"
+          ],
+          "hit": 1,
+          "recall": 0.5,
+          "precision": 0.3333333333333333,
+          "rr": 1
+        },
+        {
+          "id": "c03",
+          "type": "cross-file",
+          "retrieved": [
+            "model/Comment.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "routes/likeRoutes.js"
+          ],
+          "expected": [
+            "routes/commentRoutes.js",
+            "model/Comment.js",
+            "model/Post.js",
+            "model/User.js"
+          ],
+          "hit": 1,
+          "recall": 0.75,
+          "precision": 0.75,
+          "rr": 1
+        },
+        {
+          "id": "c04",
+          "type": "cross-file",
+          "retrieved": [
+            "controller/authController.js",
+            "middleware/authMiddleware.js",
+            "routes/commentRoutes.js",
+            "controller/followController.js"
+          ],
+          "expected": [
+            "controller/authController.js",
+            "middleware/authMiddleware.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.5,
+          "rr": 1
+        }
+      ],
+      "ast": [
+        {
+          "id": "s01",
+          "type": "semantic",
+          "retrieved": [
+            "model/User.js",
+            "controller/authController.js",
+            "routes/commentRoutes.js",
+            "config/db.js",
+            "controller/followController.js"
+          ],
+          "expected": [
+            "model/User.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.2,
+          "rr": 1
+        },
+        {
+          "id": "s02",
+          "type": "semantic",
+          "retrieved": [
+            "middleware/authMiddleware.js",
+            "controller/authController.js"
+          ],
+          "expected": [
+            "middleware/authMiddleware.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.5,
+          "rr": 1
+        },
+        {
+          "id": "s03",
+          "type": "semantic",
+          "retrieved": [
+            "controller/authController.js",
+            "model/User.js",
+            "controller/followController.js"
+          ],
+          "expected": [
+            "controller/authController.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "rr": 1
+        },
+        {
+          "id": "s04",
+          "type": "semantic",
+          "retrieved": [
+            "config/db.js",
+            "server.js"
+          ],
+          "expected": [
+            "config/db.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.5,
+          "rr": 1
+        },
+        {
+          "id": "s05",
+          "type": "semantic",
+          "retrieved": [
+            "routes/commentRoutes.js",
+            "controller/postController.js"
+          ],
+          "expected": [
+            "routes/commentRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.5,
+          "rr": 1
+        },
+        {
+          "id": "s06",
+          "type": "semantic",
+          "retrieved": [
+            "controller/postController.js",
+            "routes/commentRoutes.js"
+          ],
+          "expected": [
+            "controller/postController.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.5,
+          "rr": 1
+        },
+        {
+          "id": "s07",
+          "type": "semantic",
+          "retrieved": [
+            "model/Comment.js",
+            "routes/commentRoutes.js",
+            "model/Post.js",
+            "model/User.js"
+          ],
+          "expected": [
+            "model/Comment.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.25,
+          "rr": 1
+        },
+        {
+          "id": "s08",
+          "type": "semantic",
+          "retrieved": [
+            "server.js",
+            "routes/likeRoutes.js",
+            "routes/commentRoutes.js"
+          ],
+          "expected": [
+            "server.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "rr": 1
+        },
+        {
+          "id": "t01",
+          "type": "structural",
+          "retrieved": [
+            "middleware/authMiddleware.js",
+            "routes/likeRoutes.js",
+            "routes/commentRoutes.js"
+          ],
+          "expected": [
+            "middleware/authMiddleware.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 0.6,
+          "precision": 1,
+          "rr": 1
+        },
+        {
+          "id": "t02",
+          "type": "structural",
+          "retrieved": [
+            "controller/postController.js"
+          ],
+          "expected": [
+            "controller/postController.js",
+            "routes/postRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 0.5,
+          "precision": 1,
+          "rr": 1
+        },
+        {
+          "id": "t03",
+          "type": "structural",
+          "retrieved": [
+            "controller/followController.js"
+          ],
+          "expected": [
+            "controller/followController.js",
+            "routes/followRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 0.5,
+          "precision": 1,
+          "rr": 1
+        },
+        {
+          "id": "t04",
+          "type": "structural",
+          "retrieved": [
+            "config/db.js",
+            "server.js",
+            "controller/followController.js",
+            "controller/authController.js"
+          ],
+          "expected": [
+            "config/db.js",
+            "server.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.5,
+          "rr": 1
+        },
+        {
+          "id": "t05",
+          "type": "structural",
+          "retrieved": [
+            "routes/commentRoutes.js",
+            "routes/likeRoutes.js",
+            "server.js",
+            "routes/followRoutes.js",
+            "routes/authRoutes.js"
+          ],
+          "expected": [
+            "routes/followRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.2,
+          "rr": 0.25
+        },
+        {
+          "id": "t06",
+          "type": "structural",
+          "retrieved": [
+            "model/User.js",
+            "controller/authController.js",
+            "controller/followController.js",
+            "controller/postController.js"
+          ],
+          "expected": [
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "controller/authController.js",
+            "controller/postController.js",
+            "controller/followController.js",
+            "model/Comment.js",
+            "model/Post.js",
+            "model/FollowRequest.js"
+          ],
+          "hit": 1,
+          "recall": 0.36363636363636365,
+          "precision": 1,
+          "rr": 1
+        },
+        {
+          "id": "t07",
+          "type": "structural",
+          "retrieved": [
+            "server.js",
+            "routes/authRoutes.js",
+            "middleware/authMiddleware.js",
+            "config/db.js",
+            "routes/commentRoutes.js"
+          ],
+          "expected": [
+            "controller/authController.js",
+            "routes/authRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 0.5,
+          "precision": 0.2,
+          "rr": 0.5
+        },
+        {
+          "id": "t08",
+          "type": "structural",
+          "retrieved": [
+            "middleware/authMiddleware.js",
+            "controller/authController.js"
+          ],
+          "expected": [
+            "middleware/authMiddleware.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.5,
+          "rr": 1
+        },
+        {
+          "id": "c01",
+          "type": "cross-file",
+          "retrieved": [
+            "controller/postController.js",
+            "routes/likeRoutes.js",
+            "routes/commentRoutes.js"
+          ],
+          "expected": [
+            "routes/postRoutes.js",
+            "controller/postController.js",
+            "middleware/authMiddleware.js",
+            "model/Post.js"
+          ],
+          "hit": 1,
+          "recall": 0.25,
+          "precision": 0.3333333333333333,
+          "rr": 1
+        },
+        {
+          "id": "c02",
+          "type": "cross-file",
+          "retrieved": [
+            "controller/postController.js",
+            "controller/followController.js"
+          ],
+          "expected": [
+            "controller/postController.js",
+            "model/User.js"
+          ],
+          "hit": 1,
+          "recall": 0.5,
+          "precision": 0.5,
+          "rr": 1
+        },
+        {
+          "id": "c03",
+          "type": "cross-file",
+          "retrieved": [
+            "model/Comment.js",
+            "routes/commentRoutes.js",
+            "model/Post.js",
+            "server.js"
+          ],
+          "expected": [
+            "routes/commentRoutes.js",
+            "model/Comment.js",
+            "model/Post.js",
+            "model/User.js"
+          ],
+          "hit": 1,
+          "recall": 0.75,
+          "precision": 0.75,
+          "rr": 1
+        },
+        {
+          "id": "c04",
+          "type": "cross-file",
+          "retrieved": [
+            "middleware/authMiddleware.js",
+            "controller/authController.js",
+            "routes/commentRoutes.js"
+          ],
+          "expected": [
+            "controller/authController.js",
+            "middleware/authMiddleware.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.6666666666666666,
+          "rr": 1
+        }
+      ],
+      "hybrid": [
+        {
+          "id": "s01",
+          "type": "semantic",
+          "retrieved": [
+            "model/User.js",
+            "controller/authController.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "config/db.js"
+          ],
+          "expected": [
+            "model/User.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.08333333333333333,
+          "rr": 1
+        },
+        {
+          "id": "s02",
+          "type": "semantic",
+          "retrieved": [
+            "middleware/authMiddleware.js",
+            "server.js",
+            "controller/authController.js"
+          ],
+          "expected": [
+            "middleware/authMiddleware.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "rr": 1
+        },
+        {
+          "id": "s03",
+          "type": "semantic",
+          "retrieved": [
+            "controller/authController.js",
+            "model/User.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "expected": [
+            "controller/authController.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.09090909090909091,
+          "rr": 1
+        },
+        {
+          "id": "s04",
+          "type": "semantic",
+          "retrieved": [
+            "config/db.js",
+            "server.js"
+          ],
+          "expected": [
+            "config/db.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.5,
+          "rr": 1
+        },
+        {
+          "id": "s05",
+          "type": "semantic",
+          "retrieved": [
+            "routes/commentRoutes.js",
+            "model/Comment.js",
+            "controller/followController.js",
+            "model/Post.js",
+            "model/User.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "server.js",
+            "controller/postController.js"
+          ],
+          "expected": [
+            "routes/commentRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.1111111111111111,
+          "rr": 1
+        },
+        {
+          "id": "s06",
+          "type": "semantic",
+          "retrieved": [
+            "controller/postController.js",
+            "model/Post.js",
+            "controller/followController.js",
+            "model/Comment.js",
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "server.js"
+          ],
+          "expected": [
+            "controller/postController.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.1,
+          "rr": 1
+        },
+        {
+          "id": "s07",
+          "type": "semantic",
+          "retrieved": [
+            "model/Comment.js",
+            "controller/followController.js",
+            "model/Post.js",
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "server.js"
+          ],
+          "expected": [
+            "model/Comment.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.125,
+          "rr": 1
+        },
+        {
+          "id": "s08",
+          "type": "semantic",
+          "retrieved": [
+            "routes/likeRoutes.js",
+            "server.js"
+          ],
+          "expected": [
+            "server.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.5,
+          "rr": 0.5
+        },
+        {
+          "id": "t01",
+          "type": "structural",
+          "retrieved": [
+            "middleware/authMiddleware.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "expected": [
+            "middleware/authMiddleware.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 1,
+          "rr": 1
+        },
+        {
+          "id": "t02",
+          "type": "structural",
+          "retrieved": [
+            "controller/postController.js",
+            "routes/postRoutes.js"
+          ],
+          "expected": [
+            "controller/postController.js",
+            "routes/postRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 1,
+          "rr": 1
+        },
+        {
+          "id": "t03",
+          "type": "structural",
+          "retrieved": [
+            "controller/followController.js",
+            "routes/followRoutes.js"
+          ],
+          "expected": [
+            "controller/followController.js",
+            "routes/followRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 1,
+          "rr": 1
+        },
+        {
+          "id": "t04",
+          "type": "structural",
+          "retrieved": [
+            "config/db.js",
+            "server.js",
+            "controller/followController.js"
+          ],
+          "expected": [
+            "config/db.js",
+            "server.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.6666666666666666,
+          "rr": 1
+        },
+        {
+          "id": "t05",
+          "type": "structural",
+          "retrieved": [
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "server.js",
+            "routes/authRoutes.js"
+          ],
+          "expected": [
+            "routes/followRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.25,
+          "rr": 0.5
+        },
+        {
+          "id": "t06",
+          "type": "structural",
+          "retrieved": [
+            "model/User.js",
+            "controller/authController.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "expected": [
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "controller/authController.js",
+            "controller/postController.js",
+            "controller/followController.js",
+            "model/Comment.js",
+            "model/Post.js",
+            "model/FollowRequest.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 1,
+          "rr": 1
+        },
+        {
+          "id": "t07",
+          "type": "structural",
+          "retrieved": [
+            "server.js",
+            "controller/authController.js",
+            "routes/authRoutes.js",
+            "middleware/authMiddleware.js",
+            "config/db.js"
+          ],
+          "expected": [
+            "controller/authController.js",
+            "routes/authRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.4,
+          "rr": 0.5
+        },
+        {
+          "id": "t08",
+          "type": "structural",
+          "retrieved": [
+            "middleware/authMiddleware.js",
+            "controller/authController.js"
+          ],
+          "expected": [
+            "middleware/authMiddleware.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.5,
+          "rr": 1
+        },
+        {
+          "id": "c01",
+          "type": "cross-file",
+          "retrieved": [
+            "controller/postController.js",
+            "model/Post.js",
+            "controller/followController.js",
+            "model/Comment.js",
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "server.js"
+          ],
+          "expected": [
+            "routes/postRoutes.js",
+            "controller/postController.js",
+            "middleware/authMiddleware.js",
+            "model/Post.js"
+          ],
+          "hit": 1,
+          "recall": 0.75,
+          "precision": 0.3,
+          "rr": 1
+        },
+        {
+          "id": "c02",
+          "type": "cross-file",
+          "retrieved": [
+            "controller/postController.js",
+            "model/User.js",
+            "controller/authController.js",
+            "controller/followController.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "expected": [
+            "controller/postController.js",
+            "model/User.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.18181818181818182,
+          "rr": 1
+        },
+        {
+          "id": "c03",
+          "type": "cross-file",
+          "retrieved": [
+            "model/Comment.js",
+            "controller/followController.js",
+            "model/Post.js",
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "server.js",
+            "controller/postController.js",
+            "routes/postRoutes.js"
+          ],
+          "expected": [
+            "routes/commentRoutes.js",
+            "model/Comment.js",
+            "model/Post.js",
+            "model/User.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.4,
+          "rr": 1
+        },
+        {
+          "id": "c04",
+          "type": "cross-file",
+          "retrieved": [
+            "middleware/authMiddleware.js",
+            "model/User.js",
+            "controller/authController.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "routes/authRoutes.js"
+          ],
+          "expected": [
+            "controller/authController.js",
+            "middleware/authMiddleware.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.15384615384615385,
+          "rr": 1
+        }
+      ],
+      "graph": [
+        {
+          "id": "s01",
+          "type": "semantic",
+          "retrieved": [
+            "model/User.js",
+            "controller/authController.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "expected": [
+            "model/User.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.09090909090909091,
+          "rr": 1
+        },
+        {
+          "id": "s02",
+          "type": "semantic",
+          "retrieved": [
+            "server.js"
+          ],
+          "expected": [
+            "middleware/authMiddleware.js"
+          ],
+          "hit": 0,
+          "recall": 0,
+          "precision": 0,
+          "rr": 0
+        },
+        {
+          "id": "s03",
+          "type": "semantic",
+          "retrieved": [
+            "model/User.js",
+            "controller/authController.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "expected": [
+            "controller/authController.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.09090909090909091,
+          "rr": 0.5
+        },
+        {
+          "id": "s04",
+          "type": "semantic",
+          "retrieved": [],
+          "expected": [
+            "config/db.js"
+          ],
+          "hit": 0,
+          "recall": 0,
+          "precision": 0,
+          "rr": 0
+        },
+        {
+          "id": "s05",
+          "type": "semantic",
+          "retrieved": [
+            "model/Comment.js",
+            "controller/followController.js",
+            "model/Post.js",
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "server.js"
+          ],
+          "expected": [
+            "routes/commentRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.125,
+          "rr": 0.2
+        },
+        {
+          "id": "s06",
+          "type": "semantic",
+          "retrieved": [
+            "model/Post.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "server.js"
+          ],
+          "expected": [
+            "controller/postController.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.1,
+          "rr": 0.3333333333333333
+        },
+        {
+          "id": "s07",
+          "type": "semantic",
+          "retrieved": [
+            "model/Comment.js",
+            "controller/followController.js",
+            "model/Post.js",
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "server.js"
+          ],
+          "expected": [
+            "model/Comment.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.125,
+          "rr": 1
+        },
+        {
+          "id": "s08",
+          "type": "semantic",
+          "retrieved": [],
+          "expected": [
+            "server.js"
+          ],
+          "hit": 0,
+          "recall": 0,
+          "precision": 0,
+          "rr": 0
+        },
+        {
+          "id": "t01",
+          "type": "structural",
+          "retrieved": [
+            "middleware/authMiddleware.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "expected": [
+            "middleware/authMiddleware.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 1,
+          "rr": 1
+        },
+        {
+          "id": "t02",
+          "type": "structural",
+          "retrieved": [
+            "controller/postController.js",
+            "routes/postRoutes.js"
+          ],
+          "expected": [
+            "controller/postController.js",
+            "routes/postRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 1,
+          "rr": 1
+        },
+        {
+          "id": "t03",
+          "type": "structural",
+          "retrieved": [
+            "controller/followController.js",
+            "routes/followRoutes.js"
+          ],
+          "expected": [
+            "controller/followController.js",
+            "routes/followRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 1,
+          "rr": 1
+        },
+        {
+          "id": "t04",
+          "type": "structural",
+          "retrieved": [
+            "config/db.js",
+            "server.js"
+          ],
+          "expected": [
+            "config/db.js",
+            "server.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 1,
+          "rr": 1
+        },
+        {
+          "id": "t05",
+          "type": "structural",
+          "retrieved": [
+            "routes/followRoutes.js",
+            "server.js"
+          ],
+          "expected": [
+            "routes/followRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.5,
+          "rr": 1
+        },
+        {
+          "id": "t06",
+          "type": "structural",
+          "retrieved": [
+            "model/User.js",
+            "controller/authController.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "expected": [
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "controller/authController.js",
+            "controller/postController.js",
+            "controller/followController.js",
+            "model/Comment.js",
+            "model/Post.js",
+            "model/FollowRequest.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 1,
+          "rr": 1
+        },
+        {
+          "id": "t07",
+          "type": "structural",
+          "retrieved": [
+            "controller/authController.js",
+            "routes/authRoutes.js"
+          ],
+          "expected": [
+            "controller/authController.js",
+            "routes/authRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 1,
+          "rr": 1
+        },
+        {
+          "id": "t08",
+          "type": "structural",
+          "retrieved": [],
+          "expected": [
+            "middleware/authMiddleware.js"
+          ],
+          "hit": 0,
+          "recall": 0,
+          "precision": 0,
+          "rr": 0
+        },
+        {
+          "id": "c01",
+          "type": "cross-file",
+          "retrieved": [
+            "model/Post.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "server.js"
+          ],
+          "expected": [
+            "routes/postRoutes.js",
+            "controller/postController.js",
+            "middleware/authMiddleware.js",
+            "model/Post.js"
+          ],
+          "hit": 1,
+          "recall": 0.75,
+          "precision": 0.3,
+          "rr": 1
+        },
+        {
+          "id": "c02",
+          "type": "cross-file",
+          "retrieved": [
+            "model/User.js",
+            "controller/authController.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "expected": [
+            "controller/postController.js",
+            "model/User.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.18181818181818182,
+          "rr": 1
+        },
+        {
+          "id": "c03",
+          "type": "cross-file",
+          "retrieved": [
+            "model/Comment.js",
+            "controller/followController.js",
+            "model/Post.js",
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "server.js",
+            "controller/postController.js",
+            "routes/postRoutes.js"
+          ],
+          "expected": [
+            "routes/commentRoutes.js",
+            "model/Comment.js",
+            "model/Post.js",
+            "model/User.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.4,
+          "rr": 1
+        },
+        {
+          "id": "c04",
+          "type": "cross-file",
+          "retrieved": [
+            "model/User.js",
+            "controller/authController.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "routes/authRoutes.js"
+          ],
+          "expected": [
+            "controller/authController.js",
+            "middleware/authMiddleware.js"
+          ],
+          "hit": 1,
+          "recall": 0.5,
+          "precision": 0.08333333333333333,
+          "rr": 0.5
+        }
+      ]
+    },
+    "10": {
+      "naive": [
+        {
+          "id": "s01",
+          "type": "semantic",
+          "retrieved": [
+            "model/User.js",
+            "controller/authController.js",
+            "config/db.js",
+            "routes/commentRoutes.js",
+            "controller/postController.js",
+            "controller/followController.js",
+            "routes/likeRoutes.js"
+          ],
+          "expected": [
+            "model/User.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.14285714285714285,
+          "rr": 1
+        },
+        {
+          "id": "s02",
+          "type": "semantic",
+          "retrieved": [
+            "middleware/authMiddleware.js",
+            "controller/authController.js",
+            "routes/likeRoutes.js",
+            "controller/postController.js",
+            "routes/commentRoutes.js",
+            "routes/authRoutes.js"
+          ],
+          "expected": [
+            "middleware/authMiddleware.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.16666666666666666,
+          "rr": 1
+        },
+        {
+          "id": "s03",
+          "type": "semantic",
+          "retrieved": [
+            "controller/authController.js",
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "controller/followController.js",
+            "routes/authRoutes.js",
+            "middleware/authMiddleware.js",
+            "routes/likeRoutes.js"
+          ],
+          "expected": [
+            "controller/authController.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.14285714285714285,
+          "rr": 1
+        },
+        {
+          "id": "s04",
+          "type": "semantic",
+          "retrieved": [
+            "config/db.js",
+            "model/User.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js",
+            "controller/authController.js",
+            "routes/likeRoutes.js",
+            "server.js"
+          ],
+          "expected": [
+            "config/db.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.125,
+          "rr": 1
+        },
+        {
+          "id": "s05",
+          "type": "semantic",
+          "retrieved": [
+            "routes/commentRoutes.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "routes/likeRoutes.js",
+            "model/Post.js",
+            "controller/followController.js"
+          ],
+          "expected": [
+            "routes/commentRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.16666666666666666,
+          "rr": 1
+        },
+        {
+          "id": "s06",
+          "type": "semantic",
+          "retrieved": [
+            "controller/postController.js",
+            "routes/postRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/commentRoutes.js",
+            "routes/authRoutes.js"
+          ],
+          "expected": [
+            "controller/postController.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.2,
+          "rr": 1
+        },
+        {
+          "id": "s07",
+          "type": "semantic",
+          "retrieved": [
+            "model/Comment.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "model/User.js",
+            "routes/likeRoutes.js",
+            "config/db.js"
+          ],
+          "expected": [
+            "model/Comment.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.16666666666666666,
+          "rr": 1
+        },
+        {
+          "id": "s08",
+          "type": "semantic",
+          "retrieved": [
+            "routes/commentRoutes.js",
+            "server.js",
+            "routes/authRoutes.js",
+            "routes/postRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "controller/followController.js"
+          ],
+          "expected": [
+            "server.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.14285714285714285,
+          "rr": 0.5
+        },
+        {
+          "id": "t01",
+          "type": "structural",
+          "retrieved": [
+            "middleware/authMiddleware.js",
+            "routes/commentRoutes.js",
+            "routes/postRoutes.js",
+            "routes/likeRoutes.js",
+            "model/User.js",
+            "routes/followRoutes.js",
+            "routes/authRoutes.js",
+            "controller/followController.js",
+            "controller/postController.js"
+          ],
+          "expected": [
+            "middleware/authMiddleware.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.5555555555555556,
+          "rr": 1
+        },
+        {
+          "id": "t02",
+          "type": "structural",
+          "retrieved": [
+            "controller/postController.js",
+            "routes/likeRoutes.js",
+            "routes/commentRoutes.js",
+            "routes/postRoutes.js",
+            "model/Post.js"
+          ],
+          "expected": [
+            "controller/postController.js",
+            "routes/postRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.4,
+          "rr": 1
+        },
+        {
+          "id": "t03",
+          "type": "structural",
+          "retrieved": [
+            "controller/followController.js",
+            "controller/postController.js",
+            "routes/commentRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/followRoutes.js"
+          ],
+          "expected": [
+            "controller/followController.js",
+            "routes/followRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.4,
+          "rr": 1
+        },
+        {
+          "id": "t04",
+          "type": "structural",
+          "retrieved": [
+            "config/db.js",
+            "server.js",
+            "model/User.js",
+            "routes/authRoutes.js",
+            "routes/commentRoutes.js",
+            "controller/postController.js",
+            "routes/likeRoutes.js",
+            "controller/authController.js"
+          ],
+          "expected": [
+            "config/db.js",
+            "server.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.25,
+          "rr": 1
+        },
+        {
+          "id": "t05",
+          "type": "structural",
+          "retrieved": [
+            "server.js",
+            "routes/followRoutes.js",
+            "routes/authRoutes.js",
+            "routes/postRoutes.js",
+            "routes/commentRoutes.js",
+            "model/FollowRequest.js",
+            "routes/likeRoutes.js",
+            "config/db.js",
+            "controller/followController.js"
+          ],
+          "expected": [
+            "routes/followRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.1111111111111111,
+          "rr": 0.5
+        },
+        {
+          "id": "t06",
+          "type": "structural",
+          "retrieved": [
+            "model/User.js",
+            "controller/authController.js",
+            "routes/commentRoutes.js",
+            "model/Post.js",
+            "controller/followController.js",
+            "model/Comment.js",
+            "controller/postController.js",
+            "model/FollowRequest.js"
+          ],
+          "expected": [
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "controller/authController.js",
+            "controller/postController.js",
+            "controller/followController.js",
+            "model/Comment.js",
+            "model/Post.js",
+            "model/FollowRequest.js"
+          ],
+          "hit": 1,
+          "recall": 0.7272727272727273,
+          "precision": 1,
+          "rr": 1
+        },
+        {
+          "id": "t07",
+          "type": "structural",
+          "retrieved": [
+            "routes/authRoutes.js",
+            "routes/followRoutes.js",
+            "routes/postRoutes.js",
+            "model/User.js",
+            "middleware/authMiddleware.js",
+            "config/db.js",
+            "routes/commentRoutes.js",
+            "server.js",
+            "controller/authController.js",
+            "routes/likeRoutes.js"
+          ],
+          "expected": [
+            "controller/authController.js",
+            "routes/authRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.2,
+          "rr": 1
+        },
+        {
+          "id": "t08",
+          "type": "structural",
+          "retrieved": [
+            "middleware/authMiddleware.js",
+            "controller/authController.js",
+            "controller/followController.js",
+            "routes/authRoutes.js",
+            "controller/postController.js",
+            "routes/commentRoutes.js",
+            "routes/postRoutes.js",
+            "config/db.js"
+          ],
+          "expected": [
+            "middleware/authMiddleware.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.125,
+          "rr": 1
+        },
+        {
+          "id": "c01",
+          "type": "cross-file",
+          "retrieved": [
+            "controller/postController.js",
+            "routes/likeRoutes.js",
+            "routes/commentRoutes.js",
+            "routes/postRoutes.js",
+            "routes/followRoutes.js",
+            "config/db.js",
+            "routes/authRoutes.js"
+          ],
+          "expected": [
+            "routes/postRoutes.js",
+            "controller/postController.js",
+            "middleware/authMiddleware.js",
+            "model/Post.js"
+          ],
+          "hit": 1,
+          "recall": 0.5,
+          "precision": 0.2857142857142857,
+          "rr": 1
+        },
+        {
+          "id": "c02",
+          "type": "cross-file",
+          "retrieved": [
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/Post.js",
+            "model/User.js",
+            "controller/followController.js",
+            "routes/commentRoutes.js"
+          ],
+          "expected": [
+            "controller/postController.js",
+            "model/User.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "rr": 1
+        },
+        {
+          "id": "c03",
+          "type": "cross-file",
+          "retrieved": [
+            "model/Comment.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "routes/likeRoutes.js",
+            "controller/postController.js",
+            "model/User.js"
+          ],
+          "expected": [
+            "routes/commentRoutes.js",
+            "model/Comment.js",
+            "model/Post.js",
+            "model/User.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.6666666666666666,
+          "rr": 1
+        },
+        {
+          "id": "c04",
+          "type": "cross-file",
+          "retrieved": [
+            "controller/authController.js",
+            "middleware/authMiddleware.js",
+            "routes/commentRoutes.js",
+            "controller/followController.js",
+            "model/User.js",
+            "routes/likeRoutes.js",
+            "controller/postController.js"
+          ],
+          "expected": [
+            "controller/authController.js",
+            "middleware/authMiddleware.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.2857142857142857,
+          "rr": 1
+        }
+      ],
+      "ast": [
+        {
+          "id": "s01",
+          "type": "semantic",
+          "retrieved": [
+            "model/User.js",
+            "controller/authController.js",
+            "routes/commentRoutes.js",
+            "config/db.js",
+            "controller/followController.js",
+            "server.js",
+            "routes/likeRoutes.js"
+          ],
+          "expected": [
+            "model/User.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.14285714285714285,
+          "rr": 1
+        },
+        {
+          "id": "s02",
+          "type": "semantic",
+          "retrieved": [
+            "middleware/authMiddleware.js",
+            "controller/authController.js",
+            "controller/postController.js",
+            "server.js",
+            "controller/followController.js"
+          ],
+          "expected": [
+            "middleware/authMiddleware.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.2,
+          "rr": 1
+        },
+        {
+          "id": "s03",
+          "type": "semantic",
+          "retrieved": [
+            "controller/authController.js",
+            "model/User.js",
+            "controller/followController.js",
+            "routes/commentRoutes.js"
+          ],
+          "expected": [
+            "controller/authController.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.25,
+          "rr": 1
+        },
+        {
+          "id": "s04",
+          "type": "semantic",
+          "retrieved": [
+            "config/db.js",
+            "server.js",
+            "model/User.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js"
+          ],
+          "expected": [
+            "config/db.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.16666666666666666,
+          "rr": 1
+        },
+        {
+          "id": "s05",
+          "type": "semantic",
+          "retrieved": [
+            "routes/commentRoutes.js",
+            "controller/postController.js",
+            "controller/followController.js"
+          ],
+          "expected": [
+            "routes/commentRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "rr": 1
+        },
+        {
+          "id": "s06",
+          "type": "semantic",
+          "retrieved": [
+            "controller/postController.js",
+            "routes/commentRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "expected": [
+            "controller/postController.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.25,
+          "rr": 1
+        },
+        {
+          "id": "s07",
+          "type": "semantic",
+          "retrieved": [
+            "model/Comment.js",
+            "routes/commentRoutes.js",
+            "model/Post.js",
+            "model/User.js",
+            "routes/likeRoutes.js",
+            "server.js"
+          ],
+          "expected": [
+            "model/Comment.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.16666666666666666,
+          "rr": 1
+        },
+        {
+          "id": "s08",
+          "type": "semantic",
+          "retrieved": [
+            "server.js",
+            "routes/likeRoutes.js",
+            "routes/commentRoutes.js"
+          ],
+          "expected": [
+            "server.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "rr": 1
+        },
+        {
+          "id": "t01",
+          "type": "structural",
+          "retrieved": [
+            "middleware/authMiddleware.js",
+            "routes/likeRoutes.js",
+            "routes/commentRoutes.js",
+            "server.js",
+            "model/User.js"
+          ],
+          "expected": [
+            "middleware/authMiddleware.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 0.6,
+          "precision": 0.6,
+          "rr": 1
+        },
+        {
+          "id": "t02",
+          "type": "structural",
+          "retrieved": [
+            "controller/postController.js",
+            "routes/likeRoutes.js",
+            "routes/commentRoutes.js"
+          ],
+          "expected": [
+            "controller/postController.js",
+            "routes/postRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 0.5,
+          "precision": 0.3333333333333333,
+          "rr": 1
+        },
+        {
+          "id": "t03",
+          "type": "structural",
+          "retrieved": [
+            "controller/followController.js",
+            "server.js"
+          ],
+          "expected": [
+            "controller/followController.js",
+            "routes/followRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 0.5,
+          "precision": 0.5,
+          "rr": 1
+        },
+        {
+          "id": "t04",
+          "type": "structural",
+          "retrieved": [
+            "config/db.js",
+            "server.js",
+            "controller/followController.js",
+            "controller/authController.js",
+            "routes/likeRoutes.js",
+            "routes/commentRoutes.js"
+          ],
+          "expected": [
+            "config/db.js",
+            "server.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "rr": 1
+        },
+        {
+          "id": "t05",
+          "type": "structural",
+          "retrieved": [
+            "routes/likeRoutes.js",
+            "routes/commentRoutes.js",
+            "server.js",
+            "routes/followRoutes.js",
+            "routes/authRoutes.js",
+            "routes/postRoutes.js",
+            "config/db.js",
+            "controller/followController.js"
+          ],
+          "expected": [
+            "routes/followRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.125,
+          "rr": 0.25
+        },
+        {
+          "id": "t06",
+          "type": "structural",
+          "retrieved": [
+            "model/User.js",
+            "controller/authController.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "config/db.js"
+          ],
+          "expected": [
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "controller/authController.js",
+            "controller/postController.js",
+            "controller/followController.js",
+            "model/Comment.js",
+            "model/Post.js",
+            "model/FollowRequest.js"
+          ],
+          "hit": 1,
+          "recall": 0.36363636363636365,
+          "precision": 0.8,
+          "rr": 1
+        },
+        {
+          "id": "t07",
+          "type": "structural",
+          "retrieved": [
+            "server.js",
+            "routes/authRoutes.js",
+            "middleware/authMiddleware.js",
+            "config/db.js",
+            "routes/likeRoutes.js",
+            "routes/commentRoutes.js",
+            "model/User.js",
+            "routes/followRoutes.js"
+          ],
+          "expected": [
+            "controller/authController.js",
+            "routes/authRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 0.5,
+          "precision": 0.125,
+          "rr": 0.5
+        },
+        {
+          "id": "t08",
+          "type": "structural",
+          "retrieved": [
+            "middleware/authMiddleware.js",
+            "controller/authController.js",
+            "controller/postController.js",
+            "controller/followController.js"
+          ],
+          "expected": [
+            "middleware/authMiddleware.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.25,
+          "rr": 1
+        },
+        {
+          "id": "c01",
+          "type": "cross-file",
+          "retrieved": [
+            "controller/postController.js",
+            "routes/likeRoutes.js",
+            "routes/commentRoutes.js",
+            "server.js",
+            "routes/postRoutes.js"
+          ],
+          "expected": [
+            "routes/postRoutes.js",
+            "controller/postController.js",
+            "middleware/authMiddleware.js",
+            "model/Post.js"
+          ],
+          "hit": 1,
+          "recall": 0.5,
+          "precision": 0.4,
+          "rr": 1
+        },
+        {
+          "id": "c02",
+          "type": "cross-file",
+          "retrieved": [
+            "controller/postController.js",
+            "controller/followController.js",
+            "server.js"
+          ],
+          "expected": [
+            "controller/postController.js",
+            "model/User.js"
+          ],
+          "hit": 1,
+          "recall": 0.5,
+          "precision": 0.3333333333333333,
+          "rr": 1
+        },
+        {
+          "id": "c03",
+          "type": "cross-file",
+          "retrieved": [
+            "model/Comment.js",
+            "routes/commentRoutes.js",
+            "model/Post.js",
+            "server.js",
+            "routes/likeRoutes.js",
+            "controller/postController.js"
+          ],
+          "expected": [
+            "routes/commentRoutes.js",
+            "model/Comment.js",
+            "model/Post.js",
+            "model/User.js"
+          ],
+          "hit": 1,
+          "recall": 0.75,
+          "precision": 0.5,
+          "rr": 1
+        },
+        {
+          "id": "c04",
+          "type": "cross-file",
+          "retrieved": [
+            "middleware/authMiddleware.js",
+            "controller/authController.js",
+            "routes/commentRoutes.js",
+            "routes/likeRoutes.js"
+          ],
+          "expected": [
+            "controller/authController.js",
+            "middleware/authMiddleware.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.5,
+          "rr": 1
+        }
+      ],
+      "hybrid": [
+        {
+          "id": "s01",
+          "type": "semantic",
+          "retrieved": [
+            "model/User.js",
+            "controller/authController.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "config/db.js",
+            "server.js"
+          ],
+          "expected": [
+            "model/User.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.07692307692307693,
+          "rr": 1
+        },
+        {
+          "id": "s02",
+          "type": "semantic",
+          "retrieved": [
+            "middleware/authMiddleware.js",
+            "server.js",
+            "controller/authController.js",
+            "controller/postController.js",
+            "controller/followController.js"
+          ],
+          "expected": [
+            "middleware/authMiddleware.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.2,
+          "rr": 1
+        },
+        {
+          "id": "s03",
+          "type": "semantic",
+          "retrieved": [
+            "controller/authController.js",
+            "model/User.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "expected": [
+            "controller/authController.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.09090909090909091,
+          "rr": 1
+        },
+        {
+          "id": "s04",
+          "type": "semantic",
+          "retrieved": [
+            "config/db.js",
+            "server.js",
+            "model/User.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js"
+          ],
+          "expected": [
+            "config/db.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.16666666666666666,
+          "rr": 1
+        },
+        {
+          "id": "s05",
+          "type": "semantic",
+          "retrieved": [
+            "routes/commentRoutes.js",
+            "model/Comment.js",
+            "controller/followController.js",
+            "model/Post.js",
+            "model/User.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "server.js",
+            "controller/postController.js"
+          ],
+          "expected": [
+            "routes/commentRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.1111111111111111,
+          "rr": 1
+        },
+        {
+          "id": "s06",
+          "type": "semantic",
+          "retrieved": [
+            "controller/postController.js",
+            "model/Post.js",
+            "controller/followController.js",
+            "model/Comment.js",
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "server.js"
+          ],
+          "expected": [
+            "controller/postController.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.1,
+          "rr": 1
+        },
+        {
+          "id": "s07",
+          "type": "semantic",
+          "retrieved": [
+            "model/Comment.js",
+            "controller/followController.js",
+            "model/Post.js",
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "server.js"
+          ],
+          "expected": [
+            "model/Comment.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.125,
+          "rr": 1
+        },
+        {
+          "id": "s08",
+          "type": "semantic",
+          "retrieved": [
+            "routes/commentRoutes.js",
+            "server.js",
+            "routes/likeRoutes.js"
+          ],
+          "expected": [
+            "server.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.3333333333333333,
+          "rr": 0.5
+        },
+        {
+          "id": "t01",
+          "type": "structural",
+          "retrieved": [
+            "routes/commentRoutes.js",
+            "middleware/authMiddleware.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "server.js",
+            "model/User.js"
+          ],
+          "expected": [
+            "middleware/authMiddleware.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.7142857142857143,
+          "rr": 1
+        },
+        {
+          "id": "t02",
+          "type": "structural",
+          "retrieved": [
+            "controller/postController.js",
+            "routes/postRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/commentRoutes.js"
+          ],
+          "expected": [
+            "controller/postController.js",
+            "routes/postRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.5,
+          "rr": 1
+        },
+        {
+          "id": "t03",
+          "type": "structural",
+          "retrieved": [
+            "controller/followController.js",
+            "routes/followRoutes.js",
+            "server.js"
+          ],
+          "expected": [
+            "controller/followController.js",
+            "routes/followRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.6666666666666666,
+          "rr": 1
+        },
+        {
+          "id": "t04",
+          "type": "structural",
+          "retrieved": [
+            "config/db.js",
+            "server.js",
+            "controller/followController.js",
+            "controller/authController.js",
+            "routes/likeRoutes.js"
+          ],
+          "expected": [
+            "config/db.js",
+            "server.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.4,
+          "rr": 1
+        },
+        {
+          "id": "t05",
+          "type": "structural",
+          "retrieved": [
+            "routes/likeRoutes.js",
+            "routes/followRoutes.js",
+            "server.js",
+            "routes/authRoutes.js",
+            "routes/postRoutes.js",
+            "config/db.js",
+            "controller/followController.js"
+          ],
+          "expected": [
+            "routes/followRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.14285714285714285,
+          "rr": 0.5
+        },
+        {
+          "id": "t06",
+          "type": "structural",
+          "retrieved": [
+            "model/User.js",
+            "controller/authController.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "config/db.js"
+          ],
+          "expected": [
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "controller/authController.js",
+            "controller/postController.js",
+            "controller/followController.js",
+            "model/Comment.js",
+            "model/Post.js",
+            "model/FollowRequest.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.9166666666666666,
+          "rr": 1
+        },
+        {
+          "id": "t07",
+          "type": "structural",
+          "retrieved": [
+            "routes/likeRoutes.js",
+            "routes/commentRoutes.js",
+            "server.js",
+            "controller/authController.js",
+            "routes/authRoutes.js",
+            "middleware/authMiddleware.js",
+            "config/db.js",
+            "model/User.js",
+            "routes/followRoutes.js"
+          ],
+          "expected": [
+            "controller/authController.js",
+            "routes/authRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.2222222222222222,
+          "rr": 0.25
+        },
+        {
+          "id": "t08",
+          "type": "structural",
+          "retrieved": [
+            "middleware/authMiddleware.js",
+            "controller/authController.js",
+            "controller/postController.js",
+            "controller/followController.js"
+          ],
+          "expected": [
+            "middleware/authMiddleware.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.25,
+          "rr": 1
+        },
+        {
+          "id": "c01",
+          "type": "cross-file",
+          "retrieved": [
+            "controller/postController.js",
+            "model/Post.js",
+            "controller/followController.js",
+            "model/Comment.js",
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "server.js"
+          ],
+          "expected": [
+            "routes/postRoutes.js",
+            "controller/postController.js",
+            "middleware/authMiddleware.js",
+            "model/Post.js"
+          ],
+          "hit": 1,
+          "recall": 0.75,
+          "precision": 0.3,
+          "rr": 1
+        },
+        {
+          "id": "c02",
+          "type": "cross-file",
+          "retrieved": [
+            "controller/postController.js",
+            "model/User.js",
+            "controller/authController.js",
+            "controller/followController.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "server.js"
+          ],
+          "expected": [
+            "controller/postController.js",
+            "model/User.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.16666666666666666,
+          "rr": 1
+        },
+        {
+          "id": "c03",
+          "type": "cross-file",
+          "retrieved": [
+            "model/Comment.js",
+            "controller/followController.js",
+            "model/Post.js",
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "server.js",
+            "controller/postController.js",
+            "routes/postRoutes.js"
+          ],
+          "expected": [
+            "routes/commentRoutes.js",
+            "model/Comment.js",
+            "model/Post.js",
+            "model/User.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.4,
+          "rr": 1
+        },
+        {
+          "id": "c04",
+          "type": "cross-file",
+          "retrieved": [
+            "middleware/authMiddleware.js",
+            "model/User.js",
+            "controller/authController.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "routes/authRoutes.js"
+          ],
+          "expected": [
+            "controller/authController.js",
+            "middleware/authMiddleware.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.15384615384615385,
+          "rr": 1
+        }
+      ],
+      "graph": [
+        {
+          "id": "s01",
+          "type": "semantic",
+          "retrieved": [
+            "model/User.js",
+            "controller/authController.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "expected": [
+            "model/User.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.09090909090909091,
+          "rr": 1
+        },
+        {
+          "id": "s02",
+          "type": "semantic",
+          "retrieved": [
+            "server.js"
+          ],
+          "expected": [
+            "middleware/authMiddleware.js"
+          ],
+          "hit": 0,
+          "recall": 0,
+          "precision": 0,
+          "rr": 0
+        },
+        {
+          "id": "s03",
+          "type": "semantic",
+          "retrieved": [
+            "model/User.js",
+            "controller/authController.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "expected": [
+            "controller/authController.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.09090909090909091,
+          "rr": 0.5
+        },
+        {
+          "id": "s04",
+          "type": "semantic",
+          "retrieved": [],
+          "expected": [
+            "config/db.js"
+          ],
+          "hit": 0,
+          "recall": 0,
+          "precision": 0,
+          "rr": 0
+        },
+        {
+          "id": "s05",
+          "type": "semantic",
+          "retrieved": [
+            "model/Comment.js",
+            "controller/followController.js",
+            "model/Post.js",
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "server.js"
+          ],
+          "expected": [
+            "routes/commentRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.125,
+          "rr": 0.2
+        },
+        {
+          "id": "s06",
+          "type": "semantic",
+          "retrieved": [
+            "model/Post.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "server.js"
+          ],
+          "expected": [
+            "controller/postController.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.1,
+          "rr": 0.3333333333333333
+        },
+        {
+          "id": "s07",
+          "type": "semantic",
+          "retrieved": [
+            "model/Comment.js",
+            "controller/followController.js",
+            "model/Post.js",
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "server.js"
+          ],
+          "expected": [
+            "model/Comment.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.125,
+          "rr": 1
+        },
+        {
+          "id": "s08",
+          "type": "semantic",
+          "retrieved": [],
+          "expected": [
+            "server.js"
+          ],
+          "hit": 0,
+          "recall": 0,
+          "precision": 0,
+          "rr": 0
+        },
+        {
+          "id": "t01",
+          "type": "structural",
+          "retrieved": [
+            "middleware/authMiddleware.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "expected": [
+            "middleware/authMiddleware.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 1,
+          "rr": 1
+        },
+        {
+          "id": "t02",
+          "type": "structural",
+          "retrieved": [
+            "controller/postController.js",
+            "routes/postRoutes.js"
+          ],
+          "expected": [
+            "controller/postController.js",
+            "routes/postRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 1,
+          "rr": 1
+        },
+        {
+          "id": "t03",
+          "type": "structural",
+          "retrieved": [
+            "controller/followController.js",
+            "routes/followRoutes.js"
+          ],
+          "expected": [
+            "controller/followController.js",
+            "routes/followRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 1,
+          "rr": 1
+        },
+        {
+          "id": "t04",
+          "type": "structural",
+          "retrieved": [
+            "config/db.js",
+            "server.js"
+          ],
+          "expected": [
+            "config/db.js",
+            "server.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 1,
+          "rr": 1
+        },
+        {
+          "id": "t05",
+          "type": "structural",
+          "retrieved": [
+            "routes/followRoutes.js",
+            "server.js"
+          ],
+          "expected": [
+            "routes/followRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.5,
+          "rr": 1
+        },
+        {
+          "id": "t06",
+          "type": "structural",
+          "retrieved": [
+            "model/User.js",
+            "controller/authController.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "expected": [
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "controller/authController.js",
+            "controller/postController.js",
+            "controller/followController.js",
+            "model/Comment.js",
+            "model/Post.js",
+            "model/FollowRequest.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 1,
+          "rr": 1
+        },
+        {
+          "id": "t07",
+          "type": "structural",
+          "retrieved": [
+            "controller/authController.js",
+            "routes/authRoutes.js"
+          ],
+          "expected": [
+            "controller/authController.js",
+            "routes/authRoutes.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 1,
+          "rr": 1
+        },
+        {
+          "id": "t08",
+          "type": "structural",
+          "retrieved": [],
+          "expected": [
+            "middleware/authMiddleware.js"
+          ],
+          "hit": 0,
+          "recall": 0,
+          "precision": 0,
+          "rr": 0
+        },
+        {
+          "id": "c01",
+          "type": "cross-file",
+          "retrieved": [
+            "model/Post.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "server.js"
+          ],
+          "expected": [
+            "routes/postRoutes.js",
+            "controller/postController.js",
+            "middleware/authMiddleware.js",
+            "model/Post.js"
+          ],
+          "hit": 1,
+          "recall": 0.75,
+          "precision": 0.3,
+          "rr": 1
+        },
+        {
+          "id": "c02",
+          "type": "cross-file",
+          "retrieved": [
+            "model/User.js",
+            "controller/authController.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "expected": [
+            "controller/postController.js",
+            "model/User.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.18181818181818182,
+          "rr": 1
+        },
+        {
+          "id": "c03",
+          "type": "cross-file",
+          "retrieved": [
+            "model/Comment.js",
+            "controller/followController.js",
+            "model/Post.js",
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "server.js",
+            "controller/postController.js",
+            "routes/postRoutes.js"
+          ],
+          "expected": [
+            "routes/commentRoutes.js",
+            "model/Comment.js",
+            "model/Post.js",
+            "model/User.js"
+          ],
+          "hit": 1,
+          "recall": 1,
+          "precision": 0.4,
+          "rr": 1
+        },
+        {
+          "id": "c04",
+          "type": "cross-file",
+          "retrieved": [
+            "model/User.js",
+            "controller/authController.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "routes/authRoutes.js"
+          ],
+          "expected": [
+            "controller/authController.js",
+            "middleware/authMiddleware.js"
+          ],
+          "hit": 1,
+          "recall": 0.5,
+          "precision": 0.08333333333333333,
+          "rr": 0.5
+        }
+      ]
+    }
+  }
+}

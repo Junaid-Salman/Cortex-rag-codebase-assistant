@@ -1,0 +1,220 @@
+{
+  "repo": "social-network",
+  "sourceRepoPath": "/home/codingcops/Documents/Projects/Social-Network-Backend",
+  "status": "reviewed",
+  "notes": [
+    "Ground truth was written by reading the source files directly, not by looking at retriever output.",
+    "expectedFiles are repo-relative paths (same strings as chunk metadata.source).",
+    "Convention: when a question names an entity defined in the repo (a function, middleware or model), its defining file is included alongside the files that use it.",
+    "Set status to \"reviewed\" after checking every item; runEval.js refuses official runs on a draft.",
+    "All 20 items were re-verified against the source with grep (file, line numbers and completeness of file lists). c03 was rewritten because model/Comment.js was not needed to answer the original wording."
+  ],
+  "questions": [
+    {
+      "id": "s01",
+      "type": "semantic",
+      "question": "How is a user's password hashed before it is stored in the database?",
+      "expectedFiles": [
+        "model/User.js"
+      ],
+      "evidence": "model/User.js:20-25 pre('save') hook runs bcrypt.genSalt + bcrypt.hash"
+    },
+    {
+      "id": "s02",
+      "type": "semantic",
+      "question": "How does the server verify a JWT and reject requests that are not authenticated?",
+      "expectedFiles": [
+        "middleware/authMiddleware.js"
+      ],
+      "evidence": "middleware/authMiddleware.js:3-18 reads Authorization header, 401 if missing, jwt.verify in try/catch"
+    },
+    {
+      "id": "s03",
+      "type": "semantic",
+      "question": "What happens when a user logs in with an email and password?",
+      "expectedFiles": [
+        "controller/authController.js"
+      ],
+      "evidence": "controller/authController.js:29-43 findOne by email, bcrypt.compare, jwt.sign with 1h expiry"
+    },
+    {
+      "id": "s04",
+      "type": "semantic",
+      "question": "How does the application connect to MongoDB and what happens if the connection fails?",
+      "expectedFiles": [
+        "config/db.js"
+      ],
+      "evidence": "config/db.js:3-13 mongoose.connect(process.env.MONGO_URL); on error logs and process.exit(1)"
+    },
+    {
+      "id": "s05",
+      "type": "semantic",
+      "question": "Who is allowed to delete a comment?",
+      "expectedFiles": [
+        "routes/commentRoutes.js"
+      ],
+      "evidence": "routes/commentRoutes.js:67 comment author or the post's creator; otherwise 403"
+    },
+    {
+      "id": "s06",
+      "type": "semantic",
+      "question": "How does editing an existing post work and what authorization check is done?",
+      "expectedFiles": [
+        "controller/postController.js"
+      ],
+      "evidence": "controller/postController.js:65-85 modifyPost checks postToEdit.creator != req.user.id, then updates content"
+    },
+    {
+      "id": "s07",
+      "type": "semantic",
+      "question": "What fields does a comment have in the database schema?",
+      "expectedFiles": [
+        "model/Comment.js"
+      ],
+      "evidence": "model/Comment.js:5-10 content, authorID, postID, likes[], timestamps"
+    },
+    {
+      "id": "s08",
+      "type": "semantic",
+      "question": "Which URL prefixes are the different route groups mounted under in the app?",
+      "expectedFiles": [
+        "server.js"
+      ],
+      "evidence": "server.js:28-32 /auth, /posts, /comments, /follow, /review"
+    },
+    {
+      "id": "t01",
+      "type": "structural",
+      "question": "What calls protect?",
+      "expectedFiles": [
+        "middleware/authMiddleware.js",
+        "routes/commentRoutes.js",
+        "routes/followRoutes.js",
+        "routes/likeRoutes.js",
+        "routes/postRoutes.js"
+      ],
+      "evidence": "defined middleware/authMiddleware.js:3; used as route middleware in commentRoutes (14,56,85), followRoutes (11-23), likeRoutes (8,27,...), postRoutes (14-26). authRoutes.js does not use it"
+    },
+    {
+      "id": "t02",
+      "type": "structural",
+      "question": "Where is createPost used?",
+      "expectedFiles": [
+        "controller/postController.js",
+        "routes/postRoutes.js"
+      ],
+      "evidence": "defined controller/postController.js:23; wired routes/postRoutes.js:17"
+    },
+    {
+      "id": "t03",
+      "type": "structural",
+      "question": "Where is followById used?",
+      "expectedFiles": [
+        "controller/followController.js",
+        "routes/followRoutes.js"
+      ],
+      "evidence": "defined controller/followController.js:67; wired routes/followRoutes.js:20"
+    },
+    {
+      "id": "t04",
+      "type": "structural",
+      "question": "Where is connectDatabase called?",
+      "expectedFiles": [
+        "config/db.js",
+        "server.js"
+      ],
+      "evidence": "defined config/db.js:3; called server.js:25"
+    },
+    {
+      "id": "t05",
+      "type": "structural",
+      "question": "What does routes/followRoutes.js import?",
+      "expectedFiles": [
+        "routes/followRoutes.js"
+      ],
+      "evidence": "routes/followRoutes.js:1-8 express, Comment, Post, authMiddleware, User, followController, FollowRequest"
+    },
+    {
+      "id": "t06",
+      "type": "structural",
+      "question": "Which files import the User model?",
+      "expectedFiles": [
+        "model/User.js",
+        "routes/commentRoutes.js",
+        "routes/followRoutes.js",
+        "routes/likeRoutes.js",
+        "routes/postRoutes.js",
+        "controller/authController.js",
+        "controller/postController.js",
+        "controller/followController.js",
+        "model/Comment.js",
+        "model/Post.js",
+        "model/FollowRequest.js"
+      ],
+      "evidence": "require of model/User or ./User in the 10 importer files listed; routes/authRoutes.js and server.js do not import it. 11 expected files > k=5, so recall@5 is capped at 45%"
+    },
+    {
+      "id": "t07",
+      "type": "structural",
+      "question": "Which files import authController?",
+      "expectedFiles": [
+        "controller/authController.js",
+        "routes/authRoutes.js"
+      ],
+      "evidence": "routes/authRoutes.js:3 destructured require of ../controller/authController"
+    },
+    {
+      "id": "t08",
+      "type": "structural",
+      "question": "Where is jwt.verify called?",
+      "expectedFiles": [
+        "middleware/authMiddleware.js"
+      ],
+      "evidence": "middleware/authMiddleware.js:11. Deliberately hard: verify is a library function, not defined in the repo, so the graph has no definition node for it"
+    },
+    {
+      "id": "c01",
+      "type": "cross-file",
+      "question": "How does a request to create a post flow from the route to the database?",
+      "expectedFiles": [
+        "routes/postRoutes.js",
+        "controller/postController.js",
+        "middleware/authMiddleware.js",
+        "model/Post.js"
+      ],
+      "evidence": "postRoutes.js:17 -> protect -> postController.createPost (23-41) -> new Post / save; schema in model/Post.js"
+    },
+    {
+      "id": "c02",
+      "type": "cross-file",
+      "question": "How is the feed of posts built for a user, and how do public and private accounts affect it?",
+      "expectedFiles": [
+        "controller/postController.js",
+        "model/User.js"
+      ],
+      "evidence": "postController.js:89-124 getAllFollowingPosts merges following + users with account 'Public'; account enum in model/User.js:15"
+    },
+    {
+      "id": "c03",
+      "type": "cross-file",
+      "question": "How is a comment linked to its post and its author in the data model, and what code keeps both sides in sync when a comment is created?",
+      "expectedFiles": [
+        "routes/commentRoutes.js",
+        "model/Comment.js",
+        "model/Post.js",
+        "model/User.js"
+      ],
+      "evidence": "sync code: routes/commentRoutes.js:32-33 ($addToSet on Post.comments and User.comments); references: model/Comment.js:7-8 (authorID, postID), arrays: model/Post.js:8 and model/User.js:12 (comments)"
+    },
+    {
+      "id": "c04",
+      "type": "cross-file",
+      "question": "How does a logged-in user's token get checked on protected endpoints after login?",
+      "expectedFiles": [
+        "controller/authController.js",
+        "middleware/authMiddleware.js"
+      ],
+      "evidence": "token issued authController.js:38; verified middleware/authMiddleware.js:5-12 and attached as req.user"
+    }
+  ]
+}
