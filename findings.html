@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cortex — Findings</title>
+<style>
+:root {
+  --bg: #fafaf9; --fg: #1c1917; --muted: #57534e; --line: #e7e5e4;
+  --card: #ffffff; --accent: #0f766e; --head: #f5f5f4; --best: #ecfdf5; --code: #f5f5f4;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #12100e; --fg: #e7e5e4; --muted: #a8a29e; --line: #2e2a27;
+    --card: #1a1715; --accent: #2dd4bf; --head: #231f1c; --best: #0b2a24; --code: #231f1c;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+.layout { max-width: 1040px; margin: 0 auto; padding: 24px 16px 64px; }
+nav {
+  position: sticky; top: 0; z-index: 2; background: var(--bg);
+  display: flex; gap: 6px 14px; flex-wrap: wrap; padding: 10px 0;
+  border-bottom: 1px solid var(--line); font-size: 14px;
+}
+nav a { color: var(--muted); text-decoration: none; }
+nav a:hover { color: var(--accent); }
+h1 { font-size: 2rem; margin: 28px 0 8px; }
+h2 { font-size: 1.4rem; margin: 40px 0 12px; padding-top: 8px; scroll-margin-top: 56px; }
+h3 { font-size: 1.1rem; margin: 28px 0 8px; }
+h4 { font-size: .95rem; margin: 20px 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+p, li { max-width: 78ch; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 28px 0; }
+blockquote {
+  margin: 16px 0; padding: 10px 16px; background: var(--card);
+  border-left: 3px solid var(--accent); color: var(--muted); max-width: 78ch;
+}
+code { background: var(--code); padding: 1px 5px; border-radius: 4px; font: .88em ui-monospace, SFMono-Regular, Menlo, monospace; }
+.table-wrap { overflow-x: auto; margin: 12px 0 20px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td:not(.num) { white-space: normal; }
+th { background: var(--head); font-weight: 600; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+th:not(:first-child) { text-align: left; }
+tbody tr:last-child td { border-bottom: 0; }
+tr.best td { background: var(--best); }
+tbody tr:hover td { background: var(--head); }
+tr.best:hover td { background: var(--best); }
+ul, ol { padding-left: 1.4em; }
+li { margin: 4px 0; }
+</style>
+</head>
+<body>
+<div class="layout">
+<nav><a href="#1-system-under-test">1. System under test</a><a href="#2-index-sizes-test-repo">2. Index sizes (test repo)</a><a href="#3-response-time">3. Response time</a><a href="#4-retrieval-quality-phase-4b-official-eval">4. Retrieval quality — Phase 4B official eval</a><a href="#5-findings">5. Findings</a><a href="#6-earlier-findings">6. Earlier findings</a><a href="#7-known-limitations-and-observations">7. Known limitations and observations</a><a href="#8-not-yet-measured">8. Not yet measured</a></nav>
+<h1 id="cortex-findings">Cortex — Findings</h1>
+<p>Measured results and observations from building and evaluating Cortex (RAG over source code). Last updated 2026-10-15, after Phase 4B. Raw per-question data: <code>src/eval/results/eval-2026-10-15T16-13-49-031Z.json</code>.</p>
+<blockquote><strong>Scope:</strong> all numbers below come from one test repo (<code>Social-Network-Backend</code>, 15 JS files, Express/CommonJS) and one 20-question dataset (<code>src/eval/dataset.json</code>). Treat them as indicative for a small corpus, not general benchmarks. Answer *correctness* has <strong>not</strong> been measured yet (Phase 4C).</blockquote>
+<hr>
+<h2 id="1-system-under-test">1. System under test</h2>
+<div class="table-wrap"><table><thead><tr><th>Item</th><th>Value</th></tr></thead><tbody><tr><td>CPU</td><td>Intel Core i5-8250U @ 1.60GHz (max 3.4GHz), 8 threads</td></tr><tr><td>GPU</td><td>none (generation runs on CPU)</td></tr><tr><td>RAM</td><td>15 GiB</td></tr><tr><td>OS</td><td>Linux 6.8.0-147-generic</td></tr><tr><td>Node.js</td><td>v22.16.0</td></tr><tr><td>Ollama</td><td class=num>0.32.1</td></tr><tr><td>Generation model</td><td><code>llama3.1:8b</code> (4.9 GB)</td></tr><tr><td>Embedding model</td><td><code>nomic-embed-text</code> (274 MB, 768 dims)</td></tr><tr><td>Vector store</td><td>Supabase (Postgres + pgvector), hosted</td></tr><tr><td>Orchestration</td><td>LangChain.js</td></tr></tbody></table></div>
+<p>Timing figures depend heavily on this hardware (CPU-only inference, network latency to Supabase).</p>
+<h2 id="2-index-sizes-test-repo">2. Index sizes (test repo)</h2>
+<div class="table-wrap"><table><thead><tr><th>Index tag</th><th>Chunking</th><th>Chunks</th><th>Graph rows</th></tr></thead><tbody><tr><td><code>social-network-naive</code></td><td><code>RecursiveCharacterTextSplitter</code> (1000 / 100)</td><td class=num>30</td><td class=num>0</td></tr><tr><td><code>social-network</code></td><td>tree-sitter AST (top-level statements)</td><td class=num>64</td><td class=num>407</td></tr></tbody></table></div>
+<h2 id="3-response-time">3. Response time</h2>
+<p>Measured with hybrid retrieval (k=5) on 5 dataset questions, <code>Archieved/scratch-timing.js</code>. "Retrieval" = embed the question + Supabase round trip; "generation" = total minus retrieval.</p>
+<div class="table-wrap"><table><thead><tr><th>Question</th><th>Retrieval</th><th>Generation</th><th>Total</th><th>Answer length</th></tr></thead><tbody><tr><td>s02 (how JWT is verified)</td><td class=num>1.4s</td><td class=num>112.7s</td><td class=num>114.1s</td><td class=num>1067 chars</td></tr><tr><td>s03 (what happens on login)</td><td class=num>2.6s</td><td class=num>76.1s</td><td class=num>78.7s</td><td class=num>782 chars</td></tr><tr><td>t01 (what calls protect)</td><td class=num>0.5s</td><td class=num>92.7s</td><td class=num>93.2s</td><td class=num>564 chars</td></tr><tr><td>t03 (where followById is used)</td><td class=num>0.7s</td><td class=num>25.1s</td><td class=num>25.8s</td><td class=num>113 chars</td></tr><tr><td>c01 (create-post flow)</td><td class=num>0.8s</td><td class=num>146.6s</td><td class=num>147.4s</td><td class=num>1377 chars</td></tr><tr class="best"><td><strong>Average</strong></td><td class=num><strong>1.2s</strong></td><td class=num><strong>90.6s</strong></td><td class=num><strong>91.8s</strong></td><td></td></tr></tbody></table></div>
+<ul><li>Retrieval is about 1% of total time; generation dominates.</li><li>Generation time scales with answer length (113 chars: 26s, 1377 chars: 147s).</li><li>Likely a best case: the machine was lightly loaded, and a cold model start adds load time.</li><li>Reviewing ~10 answers (Phase 4C) therefore costs roughly 15 minutes of generation.</li><li>Smaller local models (3B class) would be roughly 2-3x faster at some quality cost (estimate, not measured).</li></ul>
+<h2 id="4-retrieval-quality-phase-4b-official-eval">4. Retrieval quality — Phase 4B official eval</h2>
+<p><strong>Setup.</strong> 20 hand-verified questions (8 semantic, 8 structural, 4 cross-file). Each config retrieves k documents; those are collapsed to distinct files and scored against the expected files.</p>
+<div class="table-wrap"><table><thead><tr><th>Config</th><th>Index</th><th>Retriever</th></tr></thead><tbody><tr><td>naive</td><td><code>social-network-naive</code></td><td>vector only</td></tr><tr><td>ast</td><td><code>social-network</code></td><td>vector only</td></tr><tr><td>hybrid</td><td><code>social-network</code></td><td>vector + code graph (EnsembleRetriever; what <code>ask</code> uses)</td></tr><tr><td>graph</td><td><code>social-network</code></td><td>code graph only (ablation)</td></tr></tbody></table></div>
+<p>Metrics: <strong>hit</strong> = any expected file retrieved; <strong>recall</strong> = fraction of expected files retrieved; <strong>precision</strong> = fraction of retrieved distinct files that are expected; <strong>MRR</strong> = mean reciprocal rank of the first expected file.</p>
+<h3 id="headline-recall">Headline: recall</h3>
+<div class="table-wrap"><table><thead><tr><th>Config</th><th>recall@5</th><th>recall@10</th></tr></thead><tbody><tr><td>naive</td><td class=num>83%</td><td class=num>96%</td></tr><tr><td>ast</td><td class=num>80%</td><td class=num>81%</td></tr><tr class="best"><td><strong>hybrid</strong></td><td class=num><strong>99%</strong></td><td class=num><strong>99%</strong></td></tr><tr><td>graph-only</td><td class=num>76%</td><td class=num>76%</td></tr></tbody></table></div>
+<p>Hit-rate was 100% for naive, ast and hybrid at both k (saturated on this small corpus), so recall is the metric that separates the configs. Graph-only hit-rate was 80%.</p>
+<h3 id="full-tables">Full tables</h3>
+<h3 id="k-5">k = 5</h3>
+<h4 id="overall">Overall</h4>
+<div class="table-wrap"><table><thead><tr><th>config</th><th>n</th><th>hit</th><th>recall</th><th>precision</th><th>MRR</th></tr></thead><tbody><tr><td>naive</td><td class=num>20</td><td class=num>100%</td><td class=num>83%</td><td class=num>40%</td><td class=num>0.95</td></tr><tr><td>ast</td><td class=num>20</td><td class=num>100%</td><td class=num>80%</td><td class=num>54%</td><td class=num>0.94</td></tr><tr><td>hybrid</td><td class=num>20</td><td class=num>100%</td><td class=num>99%</td><td class=num>43%</td><td class=num>0.93</td></tr><tr><td>graph</td><td class=num>20</td><td class=num>80%</td><td class=num>76%</td><td class=num>40%</td><td class=num>0.68</td></tr></tbody></table></div>
+<h4 id="semantic-questions-8">Semantic questions (8)</h4>
+<div class="table-wrap"><table><thead><tr><th>config</th><th>n</th><th>hit</th><th>recall</th><th>precision</th><th>MRR</th></tr></thead><tbody><tr><td>naive</td><td class=num>8</td><td class=num>100%</td><td class=num>100%</td><td class=num>27%</td><td class=num>0.94</td></tr><tr><td>ast</td><td class=num>8</td><td class=num>100%</td><td class=num>100%</td><td class=num>39%</td><td class=num>1.00</td></tr><tr><td>hybrid</td><td class=num>8</td><td class=num>100%</td><td class=num>100%</td><td class=num>23%</td><td class=num>0.94</td></tr><tr><td>graph</td><td class=num>8</td><td class=num>63%</td><td class=num>63%</td><td class=num>7%</td><td class=num>0.38</td></tr></tbody></table></div>
+<h4 id="structural-questions-8">Structural questions (8)</h4>
+<div class="table-wrap"><table><thead><tr><th>config</th><th>n</th><th>hit</th><th>recall</th><th>precision</th><th>MRR</th></tr></thead><tbody><tr><td>naive</td><td class=num>8</td><td class=num>100%</td><td class=num>72%</td><td class=num>46%</td><td class=num>0.94</td></tr><tr><td>ast</td><td class=num>8</td><td class=num>100%</td><td class=num>68%</td><td class=num>68%</td><td class=num>0.84</td></tr><tr><td>hybrid</td><td class=num>8</td><td class=num>100%</td><td class=num>100%</td><td class=num>73%</td><td class=num>0.88</td></tr><tr><td>graph</td><td class=num>8</td><td class=num>88%</td><td class=num>88%</td><td class=num>81%</td><td class=num>0.88</td></tr></tbody></table></div>
+<h4 id="cross-file-questions-4">Cross-file questions (4)</h4>
+<div class="table-wrap"><table><thead><tr><th>config</th><th>n</th><th>hit</th><th>recall</th><th>precision</th><th>MRR</th></tr></thead><tbody><tr><td>naive</td><td class=num>4</td><td class=num>100%</td><td class=num>69%</td><td class=num>52%</td><td class=num>1.00</td></tr><tr><td>ast</td><td class=num>4</td><td class=num>100%</td><td class=num>63%</td><td class=num>56%</td><td class=num>1.00</td></tr><tr><td>hybrid</td><td class=num>4</td><td class=num>100%</td><td class=num>94%</td><td class=num>26%</td><td class=num>1.00</td></tr><tr><td>graph</td><td class=num>4</td><td class=num>100%</td><td class=num>81%</td><td class=num>24%</td><td class=num>0.88</td></tr></tbody></table></div>
+<h3 id="k-10">k = 10</h3>
+<h4 id="overall">Overall</h4>
+<div class="table-wrap"><table><thead><tr><th>config</th><th>n</th><th>hit</th><th>recall</th><th>precision</th><th>MRR</th></tr></thead><tbody><tr><td>naive</td><td class=num>20</td><td class=num>100%</td><td class=num>96%</td><td class=num>29%</td><td class=num>0.95</td></tr><tr><td>ast</td><td class=num>20</td><td class=num>100%</td><td class=num>81%</td><td class=num>33%</td><td class=num>0.94</td></tr><tr><td>hybrid</td><td class=num>20</td><td class=num>100%</td><td class=num>99%</td><td class=num>30%</td><td class=num>0.91</td></tr><tr><td>graph</td><td class=num>20</td><td class=num>80%</td><td class=num>76%</td><td class=num>40%</td><td class=num>0.68</td></tr></tbody></table></div>
+<h4 id="semantic-questions-8">Semantic questions (8)</h4>
+<div class="table-wrap"><table><thead><tr><th>config</th><th>n</th><th>hit</th><th>recall</th><th>precision</th><th>MRR</th></tr></thead><tbody><tr><td>naive</td><td class=num>8</td><td class=num>100%</td><td class=num>100%</td><td class=num>16%</td><td class=num>0.94</td></tr><tr><td>ast</td><td class=num>8</td><td class=num>100%</td><td class=num>100%</td><td class=num>23%</td><td class=num>1.00</td></tr><tr><td>hybrid</td><td class=num>8</td><td class=num>100%</td><td class=num>100%</td><td class=num>15%</td><td class=num>0.94</td></tr><tr><td>graph</td><td class=num>8</td><td class=num>63%</td><td class=num>63%</td><td class=num>7%</td><td class=num>0.38</td></tr></tbody></table></div>
+<h4 id="structural-questions-8">Structural questions (8)</h4>
+<div class="table-wrap"><table><thead><tr><th>config</th><th>n</th><th>hit</th><th>recall</th><th>precision</th><th>MRR</th></tr></thead><tbody><tr><td>naive</td><td class=num>8</td><td class=num>100%</td><td class=num>97%</td><td class=num>38%</td><td class=num>0.94</td></tr><tr><td>ast</td><td class=num>8</td><td class=num>100%</td><td class=num>68%</td><td class=num>38%</td><td class=num>0.84</td></tr><tr><td>hybrid</td><td class=num>8</td><td class=num>100%</td><td class=num>100%</td><td class=num>48%</td><td class=num>0.84</td></tr><tr><td>graph</td><td class=num>8</td><td class=num>88%</td><td class=num>88%</td><td class=num>81%</td><td class=num>0.88</td></tr></tbody></table></div>
+<h4 id="cross-file-questions-4">Cross-file questions (4)</h4>
+<div class="table-wrap"><table><thead><tr><th>config</th><th>n</th><th>hit</th><th>recall</th><th>precision</th><th>MRR</th></tr></thead><tbody><tr><td>naive</td><td class=num>4</td><td class=num>100%</td><td class=num>88%</td><td class=num>39%</td><td class=num>1.00</td></tr><tr><td>ast</td><td class=num>4</td><td class=num>100%</td><td class=num>69%</td><td class=num>43%</td><td class=num>1.00</td></tr><tr><td>hybrid</td><td class=num>4</td><td class=num>100%</td><td class=num>94%</td><td class=num>26%</td><td class=num>1.00</td></tr><tr><td>graph</td><td class=num>4</td><td class=num>100%</td><td class=num>81%</td><td class=num>24%</td><td class=num>0.88</td></tr></tbody></table></div>
+<h3 id="where-each-config-missed-recall-1">Where each config missed (recall &lt; 1)</h3>
+<div class="table-wrap"><table><thead><tr><th>Config (k=5)</th><th>Imperfect questions</th></tr></thead><tbody><tr><td>naive</td><td>t01, t02, t03, t06, t07, c01, c02, c03 (8)</td></tr><tr><td>ast</td><td>t01, t02, t03, t06, t07, c01, c02, c03 (8)</td></tr><tr><td>hybrid</td><td>c01 only (missing <code>middleware/authMiddleware.js</code>)</td></tr><tr><td>graph</td><td>s02, s04, s08, t08 (zero hits), c01, c04</td></tr></tbody></table></div>
+<p>At k=10 naive drops to 2 imperfect questions, ast stays at 8, hybrid and graph are unchanged.</p>
+<p>Average distinct files retrieved per question:</p>
+<div class="table-wrap"><table><thead><tr><th>Config</th><th>k=5</th><th>k=10</th></tr></thead><tbody><tr><td>naive</td><td class=num>4.0</td><td class=num>7.0</td></tr><tr><td>ast</td><td class=num>3.0</td><td class=num>4.8</td></tr><tr><td>hybrid</td><td class=num>6.8</td><td class=num>8.1</td></tr><tr><td>graph</td><td class=num>5.9</td><td class=num>5.9</td></tr></tbody></table></div>
+<h2 id="5-findings">5. Findings</h2>
+<ol><li><strong>Hybrid retrieval clearly wins.</strong> Recall 99% at both k, versus 80-83% (k=5) for vector-only. On structural questions hybrid reaches 100% recall@5 against 72% (naive) and 68% (ast).</li><li><strong>AST chunking did not beat naive chunking at file level on this corpus.</strong> At k=10, recall was 81% (ast) vs 96% (naive). AST creates many small chunks per file, so the top-k chunks cover fewer distinct files (3.0 vs 4.0 at k=5). AST did have the best precision at k=5 (54% vs 40%).</li><li><strong>The file-level metric cannot see AST chunking's actual purpose</strong> (not cutting a function in half inside a chunk). This result is not evidence that AST chunking is worse; answer quality (Phase 4C) is where its benefit should show if it exists.</li><li><strong>Hybrid's recall edge is partly structural.</strong> A graph document surfaces several files at once, so hybrid returns 6.8 distinct files at k=5 versus 3.0 for ast. Its precision and recall are not a like-for-like comparison with vector-only configs.</li><li><strong>Graph-only fails where it should.</strong> Zero hits on semantic questions s02, s04, s08 and on t08 (<code>jwt.verify</code>, a library call with no definition in the repo). Hybrid covers these via the vector path, which justifies the hybrid design.</li><li><strong>Ensemble weighting is untested.</strong> Hybrid used fixed 0.5/0.5 weights; no tuning was done.</li></ol>
+<h2 id="6-earlier-findings">6. Earlier findings</h2>
+<h3 id="phase-2-naive-vs-ast-chunking-docs-phase2-chunking-comparison-md">Phase 2 — naive vs AST chunking (<code>docs/phase2-chunking-comparison.md</code>)</h3>
+<ul><li>Inconclusive: the test repo was a single 35-line file, so retrieval never had to choose between chunks.</li><li>An early chunker only matched named functions/classes and silently fell back to one whole-file chunk for</li></ul>
+<p>inline Express callbacks; fixed by chunking at top-level-statement granularity.</p>
+<ul><li>Every file-path citation in the answers was hallucinated because chunk metadata never reached the</li></ul>
+<p>prompt; fixed by passing <code>source</code> into the document prompt.</p>
+<h3 id="phase-3-vector-vs-code-graph-docs-phase3-hybrid-retrieval-md">Phase 3 — vector vs code graph (<code>docs/phase3-hybrid-retrieval.md</code>)</h3>
+<ul><li>The graph retriever returns complete answers where vector-only misses files (e.g. "which route files</li></ul>
+<p>use <code>protect</code>": vector-only missed <code>followRoutes.js</code> and <code>postRoutes.js</code>; graph returned all 20 call sites).</p>
+<ul><li>Bug found and fixed: substring file matching made the token <code>routes</code> match every route file; now exact</li></ul>
+<p>path / basename matching.</p>
+<ul><li>Semantic questions return no graph documents, so the graph path stays out of the way.</li></ul>
+<h2 id="7-known-limitations-and-observations">7. Known limitations and observations</h2>
+<ul><li><strong>Generation quality (llama3.1:8b).</strong> Observed in end-to-end runs: dropped <code>likeRoutes.js</code> from the</li></ul>
+<p><code>protect</code> answer even though it was in the retrieved context; invented line numbers for imports (the graph does not record them); occasionally guessed file paths in Phase 2. Not yet measured.</p>
+<ul><li><strong>Name-based call graph.</strong> References are matched by name (<code>foo()</code> and <code>a.b.foo()</code> both record <code>foo</code>), so</li></ul>
+<p>same-named functions in different files are not distinguished; "imported by" matches on basename.</p>
+<ul><li><strong>Graph file documents</strong> have no line ranges (matters for Phase 4C citations).</li><li><strong>Graph retriever</strong> loads every <code>code_graph</code> row for the repo on each query; fine at 407 rows.</li><li><strong>Dataset size and bias.</strong> 20 questions over one 15-file repo, written by reading the code with the</li></ul>
+<p>retrieval design in mind (mitigated by hand verification against the source with grep).</p>
+<ul><li><strong><code>t06</code></strong> ("which files import the User model") expects 11 files, so recall@5 is capped near 45% by design.</li></ul>
+<h2 id="8-not-yet-measured">8. Not yet measured</h2>
+<ul><li>Answer correctness and hallucination rate (Phase 4C manual review).</li><li>Effect of line-range citations on invented line numbers.</li><li>Larger or multi-language repos.</li><li>Alternative ensemble weights, smaller/faster generation models.</li></ul>
+</div>
+</body>
+</html>
