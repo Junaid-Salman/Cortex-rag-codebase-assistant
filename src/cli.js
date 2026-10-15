@@ -1,5 +1,12 @@
+import { Agent, setGlobalDispatcher } from "undici";
 import { buildIndex } from "./ingest/buildIndex.js";
 import { askQuestion } from "./chain/qaChain.js";
+
+// Node's default fetch dispatcher gives up if a response's headers haven't
+// arrived within 5 minutes. Local Ollama generation on CPU can legitimately
+// take longer than that under load, so disable the timeout rather than have
+// slow-but-working requests killed mid-flight.
+setGlobalDispatcher(new Agent({ headersTimeout: 0, bodyTimeout: 0 }));
 
 const [, , cmd, ...args] = process.argv;
 

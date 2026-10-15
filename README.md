@@ -112,6 +112,22 @@ begin
   limit match_count;
 end;
 $$;
+
+-- Code graph (functions, call/reference sites, imports) used by the
+-- graph retriever for structural questions like "what calls X".
+create table if not exists code_graph (
+  id bigint generated always as identity primary key,
+  repo text not null,
+  kind text not null,          -- 'function' | 'reference' | 'import'
+  name text,
+  scope text,
+  file text,
+  start_line int,
+  end_line int,
+  data jsonb
+);
+create index if not exists code_graph_repo_kind_idx on code_graph (repo, kind);
+create index if not exists code_graph_repo_name_idx on code_graph (repo, name);
 ```
 
 ### 3. Install dependencies

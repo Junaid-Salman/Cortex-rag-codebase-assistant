@@ -5,6 +5,8 @@ import { SupabaseVectorStore } from "@langchain/community/vectorstores/supabase"
 import { ChatPromptTemplate, PromptTemplate } from "@langchain/core/prompts";
 import { createStuffDocumentsChain } from "@langchain/classic/chains/combine_documents";
 import { createRetrievalChain } from "@langchain/classic/chains/retrieval";
+import { EnsembleRetriever } from "@langchain/classic/retrievers/ensemble";
+import { GraphRetriever } from "../retrieval/graphRetriever.js";
 
 /**
  * Ask a question against a previously indexed repo.
@@ -26,9 +28,18 @@ export async function askQuestion(question, repoName) {
   });
 
   // Only retrieve chunks belonging to this repo
-  const retriever = vectorStore.asRetriever({
+  const vectorRetriever = vectorStore.asRetriever({
     k: 5,
     filter: { repo: repoName },
+  });
+
+  // Handles structural questions ("what calls X", "what does file Y
+  // import") that vector similarity alone has no notion of.
+  const graphRetriever = new GraphRetriever({ repoName, client });
+
+  const retriever = new EnsembleRetriever({
+    retrievers: [vectorRetriever, graphRetriever],
+    weights: [0.5, 0.5],
   });
 
   const model = new ChatOllama({ model: "llama3.1:8b" });

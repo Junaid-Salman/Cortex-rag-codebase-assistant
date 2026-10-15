@@ -29,7 +29,7 @@ function looksLikeFunctionOrClass(text) {
   return /=>|\bclass\s|\bfunction\b/.test(text);
 }
 
-function pickParser(filePath) {
+export function pickParser(filePath) {
   if (filePath.endsWith(".tsx")) return tsxParser;
   if (filePath.endsWith(".ts")) return tsParser;
   return jsParser;

@@ -3,6 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import { OllamaEmbeddings } from "@langchain/ollama";
 import { SupabaseVectorStore } from "@langchain/community/vectorstores/supabase";
 import { chunkCode } from "./chunkCode.js";
+import { buildGraph } from "./buildGraph.js";
 import { Document } from "@langchain/core/documents";
 import fs from "fs";
 import path from "path";
@@ -71,4 +72,7 @@ export async function buildIndex(repoDir, repoName) {
   console.log(
     `✅ Indexed ${docs.length} chunks from ${files.length} files into Supabase.`,
   );
+
+  const graphRowCount = await buildGraph(files, repoDir, repoName, client);
+  console.log(`✅ Indexed ${graphRowCount} graph rows (functions/references/imports) into Supabase.`);
 }
