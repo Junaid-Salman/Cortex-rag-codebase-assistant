@@ -1,12 +1,9 @@
 import "dotenv/config";
-import { createClient } from "@supabase/supabase-js";
-import { OllamaEmbeddings, ChatOllama } from "@langchain/ollama";
-import { SupabaseVectorStore } from "@langchain/community/vectorstores/supabase";
+import { ChatOllama } from "@langchain/ollama";
 import { ChatPromptTemplate, PromptTemplate } from "@langchain/core/prompts";
 import { createStuffDocumentsChain } from "@langchain/classic/chains/combine_documents";
 import { createRetrievalChain } from "@langchain/classic/chains/retrieval";
-import { EnsembleRetriever } from "@langchain/classic/retrievers/ensemble";
-import { GraphRetriever } from "../retrieval/graphRetriever.js";
+import { buildRetriever } from "../retrieval/buildRetriever.js";
 
 /**
  * Ask a question against a previously indexed repo.
@@ -15,32 +12,8 @@ import { GraphRetriever } from "../retrieval/graphRetriever.js";
  * @param {string} repoName - which repo's chunks to search (matches metadata.repo from indexing)
  */
 export async function askQuestion(question, repoName) {
-  const embeddings = new OllamaEmbeddings({ model: "nomic-embed-text" });
-  const client = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_KEY,
-  );
-
-  const vectorStore = new SupabaseVectorStore(embeddings, {
-    client,
-    tableName: "code_chunks",
-    queryName: "match_code_chunks",
-  });
-
-  // Only retrieve chunks belonging to this repo
-  const vectorRetriever = vectorStore.asRetriever({
-    k: 5,
-    filter: { repo: repoName },
-  });
-
-  // Handles structural questions ("what calls X", "what does file Y
-  // import") that vector similarity alone has no notion of.
-  const graphRetriever = new GraphRetriever({ repoName, client });
-
-  const retriever = new EnsembleRetriever({
-    retrievers: [vectorRetriever, graphRetriever],
-    weights: [0.5, 0.5],
-  });
+  // Vector search + graph lookup (see buildRetriever for the pieces).
+  const retriever = buildRetriever(repoName, { mode: "hybrid", k: 5 });
 
   const model = new ChatOllama({ model: "llama3.1:8b" });
 

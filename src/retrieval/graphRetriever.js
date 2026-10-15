@@ -74,7 +74,14 @@ export class GraphRetriever extends BaseRetriever {
 
         docs.push(new Document({
           pageContent: `Function \`${def.name}\` is defined in ${def.file} (lines ${def.start_line}-${def.end_line}).\nReferenced/called at:\n${refLines}`,
-          metadata: { source: def.file },
+          // `source` is the definition file; `files` also lists every file that
+          // references it, so evaluation can tell which files this doc surfaces.
+          metadata: {
+            source: def.file,
+            files: [...new Set([def.file, ...refRows.map((r) => r.file)])],
+            startLine: def.start_line,
+            endLine: def.end_line,
+          },
         }));
       }
 
@@ -107,7 +114,10 @@ export class GraphRetriever extends BaseRetriever {
 
         docs.push(new Document({
           pageContent: `File ${file} imports:\n${imports}\n\nFiles that import ${file}:\n${importedBy}`,
-          metadata: { source: file },
+          metadata: {
+            source: file,
+            files: [...new Set([file, ...importedByRows.map((r) => r.file)])],
+          },
         }));
       }
     }

@@ -11,12 +11,15 @@ setGlobalDispatcher(new Agent({ headersTimeout: 0, bodyTimeout: 0 }));
 const [, , cmd, ...args] = process.argv;
 
 if (cmd === "index") {
-  const [repoDir, repoName] = args;
-  if (!repoDir || !repoName) {
-    console.error("Usage: node src/cli.js index <repoPath> <repoName>");
+  const flagIdx = args.indexOf("--chunker");
+  const chunker = flagIdx === -1 ? "ast" : args[flagIdx + 1];
+  const positional = flagIdx === -1 ? args : args.filter((_, i) => i !== flagIdx && i !== flagIdx + 1);
+  const [repoDir, repoName] = positional;
+  if (!repoDir || !repoName || (chunker !== "ast" && chunker !== "naive")) {
+    console.error("Usage: node src/cli.js index <repoPath> <repoName> [--chunker ast|naive]");
     process.exit(1);
   }
-  await buildIndex(repoDir, repoName);
+  await buildIndex(repoDir, repoName, { chunker });
 } else if (cmd === "ask") {
   const [repoName, ...questionParts] = args;
   const question = questionParts.join(" ");
