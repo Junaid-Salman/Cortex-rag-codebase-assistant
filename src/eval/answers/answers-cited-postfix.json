@@ -1,0 +1,75 @@
+{
+  "repo": "social-network",
+  "promptVersion": "cited",
+  "model": "llama3.1:8b",
+  "answers": [
+    {
+      "id": "c01",
+      "type": "cross-file",
+      "question": "How does a request to create a post flow from the route to the database?",
+      "expectedFiles": [
+        "routes/postRoutes.js",
+        "controller/postController.js",
+        "middleware/authMiddleware.js",
+        "model/Post.js"
+      ],
+      "seconds": 121,
+      "answer": "Based on the provided context, here's how a request to create a post flows from the route to the database:\n\nThe flow starts at `routes/postRoutes.js` (not shown in the provided context), but we can infer it based on the controller import.\n\n1. The `/posts` endpoint is handled by `postController.createPost` function.\n2. In `controller/postController.js (lines 21-41)`, the `createPost` function checks if the request body has content, and returns a 400 error if not.\n3. If the request body has content, it creates a new Post document with the provided content and the user's ID as its creator.\n4. The Post document is then saved to the database using `await post.save()`.\n5. After saving the post, the function updates the user's posts collection by adding the newly created post's ID.\n\nHere are the relevant source files that support this flow:\n\n* `controller/postController.js (lines 21-41)`\n* `model/Post.js` (not shown in provided context)",
+      "context": [
+        {
+          "source": "routes/likeRoutes.js",
+          "startLine": 8,
+          "endLine": 25,
+          "files": null,
+          "text": "router.post( '/likePost/:id', protect, async( req, res ) => {\n    const userId = req.user.id;\n    const postId = req.params.id;\n\n    const postExists = await Post.findById(postId);\n\n    if(!postExists){\n        return res.status(404).json({ message: 'Post does not exist' });\n    }\n\n    try{\n        await Post.findByIdAndUpdate(postId, { $addToSet: { likes: userId } }, {new: true});\n        await User.findByIdAndUpdate(userId, { $addToSet: { postLikes: postId } }, {new: true})\n        res.status(201).json({ message: 'Post Liked!' });\n    }catch(err){\n        res.status(500).json({ message: err.message });\n    }\n} )"
+        },
+        {
+          "source": "model/Post.js",
+          "startLine": null,
+          "endLine": null,
+          "files": [
+            "model/Post.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "server.js"
+          ],
+          "text": "File model/Post.js imports:\n- mongoose\n- ./User\n- ../model/Comment\n\nFiles that import model/Post.js:\n- controller/followController.js\n- controller/postController.js\n- model/Comment.js\n- model/User.js\n- routes/commentRoutes.js\n- routes/followRoutes.js\n- routes/likeRoutes.js\n- routes/postRoutes.js\n- server.js"
+        },
+        {
+          "source": "routes/likeRoutes.js",
+          "startLine": 27,
+          "endLine": 43,
+          "files": null,
+          "text": "router.post( '/unlikePost/:id', protect, async( req, res ) => {\n    const userId = req.user.id;\n    const postId = req.params.id;\n    const postExists = await Post.findById(postId);\n\n    if(!postExists){\n        return res.status(404).json({ message: 'Post does not exist' });\n    }\n\n    try{\n        await Post.findByIdAndUpdate(postId, { $pull: { likes: userId } }, {new: true});\n        await User.findByIdAndUpdate(userId, { $pull: { postLikes: postId } }, {new: true})\n        res.status(200).json({ message: 'Post Unliked!' });\n    }catch(err){\n        res.status(500).json({ message: err.message });\n    }\n} )"
+        },
+        {
+          "source": "controller/postController.js",
+          "startLine": 21,
+          "endLine": 41,
+          "files": null,
+          "text": "// 2 - Create a Post\n\nexports.createPost = async (req, res) => {\n\n    if (!req.body.content) {\n        return res.status(400).json({ message: 'No Content Provided in Post.' })\n    }\n\n    const post = new Post({\n        content: req.body.content,\n        creator: req.user.id,\n    });\n\n    try {\n        const newPost = await post.save();\n        await User.findByIdAndUpdate(req.user.id, { $addToSet: { posts: newPost._id } }, { new: true })\n        res.json(newPost);\n    } catch (err) {\n        res.json({ message: err.message });\n    }\n}"
+        },
+        {
+          "source": "controller/postController.js",
+          "startLine": 1,
+          "endLine": 3,
+          "files": null,
+          "text": "const express = require('express');\nconst Post = require('../model/Post');\nconst User = require('../model/User');"
+        },
+        {
+          "source": "server.js",
+          "startLine": 25,
+          "endLine": 32,
+          "files": null,
+          "text": "connectDatabase();\n//Authrization Endpoint\napp.use( '/auth', authRoutes );\napp.use( '/posts', postRoutes);\napp.use( '/comments', commentRoutes );\napp.use( '/follow', followRoutes );\napp.use( '/review', likeRoutes );"
+        }
+      ]
+    }
+  ]
+}

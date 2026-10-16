@@ -95,3 +95,19 @@ These are the judgment calls most worth a second look:
 4. `s03` (legacy): crediting `model/User.js` for `findOne`. I counted it as a wrong attribution because
    `findOne` is called in `authController.js`, even though `User` is the model it is called on.
 5. `c01` (cited): I counted 6 defects; a stricter reviewer might merge them into a single "failed answer".
+
+## Addendum — `c01` after the comment-chunk fix
+
+Regenerated with the `cited` prompt against the rebuilt 50-chunk AST index
+(`answers-cited-postfix.json`; the other nine answers above were not regenerated).
+`createPost` (lines 21-41, leading comment attached) is now in the retrieved context.
+
+| | before the fix (cited) | after the fix (cited) |
+|---|---|---|
+| Answers the question asked | no (described comment creation / speculated) | yes |
+| Defects | OQ, SP x3, WD x2 (6) | SP x1 ("we can infer `postRoutes.js`"), WD x1 (`/posts` vs `/posts/createPost`), OM x1 (no mention of `protect`) (3) |
+| Line citations | 1, valid | 2, both valid |
+| Expected files cited | 3/4 | 3/4 |
+| Generation time | 509s | 121s (the earlier run overlapped with other CPU work) |
+
+One sample; a retrieval fix cannot guarantee a better answer, but here the missing context was the cause.

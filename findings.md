@@ -1,8 +1,9 @@
 # Cortex — Findings
 
 Measured results and observations from building and evaluating Cortex (RAG over source code).
-Last updated 2026-10-15, after Phase 4B. Raw per-question data:
-`src/eval/results/eval-2026-10-15T16-13-49-031Z.json`.
+Last updated 2026-10-16, after the Phase 4C comment-chunk fix. Raw per-question retrieval data:
+`src/eval/results/eval-2026-10-16T11-54-48-975Z.json` (current, after the chunker fix) and
+`src/eval/results/eval-2026-10-15T16-13-49-031Z.json` (before the fix, kept for comparison).
 
 > **Scope:** all numbers below come from one test repo (`Social-Network-Backend`, 15 JS files,
 > Express/CommonJS) and one 20-question dataset (`src/eval/dataset.json`). Treat them as
@@ -30,10 +31,12 @@ Timing figures depend heavily on this hardware (CPU-only inference, network late
 
 ## 2. Index sizes (test repo)
 
+The AST index had 64 chunks before the comment fix described in section 5 (14 of them comment-only).
+
 | Index tag | Chunking | Chunks | Graph rows |
 |---|---|---|---|
 | `social-network-naive` | `RecursiveCharacterTextSplitter` (1000 / 100) | 30 | 0 |
-| `social-network` | tree-sitter AST (top-level statements) | 64 | 407 |
+| `social-network` | tree-sitter AST (top-level statements, leading comments attached) | 50 | 407 |
 
 ## 3. Response time
 
@@ -81,9 +84,10 @@ the first expected file.
 | graph-only | 76% | 76% |
 
 Hit-rate was 100% for naive, ast and hybrid at both k (saturated on this small corpus), so recall is
-the metric that separates the configs. Graph-only hit-rate was 80%.
+the metric that separates the configs. Graph-only hit-rate was 80%. These numbers were identical before
+and after the comment-chunk fix (section 5.1).
 
-### Full tables
+### Full tables (after the comment-chunk fix)
 
 ### k = 5
 
@@ -92,8 +96,8 @@ the metric that separates the configs. Graph-only hit-rate was 80%.
 | config | n | hit | recall | precision | MRR |
 |---|---|---|---|---|---|
 | naive | 20 | 100% | 83% | 40% | 0.95 |
-| ast | 20 | 100% | 80% | 54% | 0.94 |
-| hybrid | 20 | 100% | 99% | 43% | 0.93 |
+| ast | 20 | 100% | 80% | 46% | 0.91 |
+| hybrid | 20 | 100% | 99% | 43% | 0.90 |
 | graph | 20 | 80% | 76% | 40% | 0.68 |
 
 #### Semantic questions (8)
@@ -101,7 +105,7 @@ the metric that separates the configs. Graph-only hit-rate was 80%.
 | config | n | hit | recall | precision | MRR |
 |---|---|---|---|---|---|
 | naive | 8 | 100% | 100% | 27% | 0.94 |
-| ast | 8 | 100% | 100% | 39% | 1.00 |
+| ast | 8 | 100% | 100% | 36% | 1.00 |
 | hybrid | 8 | 100% | 100% | 23% | 0.94 |
 | graph | 8 | 63% | 63% | 7% | 0.38 |
 
@@ -110,7 +114,7 @@ the metric that separates the configs. Graph-only hit-rate was 80%.
 | config | n | hit | recall | precision | MRR |
 |---|---|---|---|---|---|
 | naive | 8 | 100% | 72% | 46% | 0.94 |
-| ast | 8 | 100% | 68% | 68% | 0.84 |
+| ast | 8 | 100% | 68% | 55% | 0.84 |
 | hybrid | 8 | 100% | 100% | 73% | 0.88 |
 | graph | 8 | 88% | 88% | 81% | 0.88 |
 
@@ -119,8 +123,8 @@ the metric that separates the configs. Graph-only hit-rate was 80%.
 | config | n | hit | recall | precision | MRR |
 |---|---|---|---|---|---|
 | naive | 4 | 100% | 69% | 52% | 1.00 |
-| ast | 4 | 100% | 63% | 56% | 1.00 |
-| hybrid | 4 | 100% | 94% | 26% | 1.00 |
+| ast | 4 | 100% | 63% | 48% | 0.88 |
+| hybrid | 4 | 100% | 94% | 26% | 0.88 |
 | graph | 4 | 100% | 81% | 24% | 0.88 |
 
 ### k = 10
@@ -130,8 +134,8 @@ the metric that separates the configs. Graph-only hit-rate was 80%.
 | config | n | hit | recall | precision | MRR |
 |---|---|---|---|---|---|
 | naive | 20 | 100% | 96% | 29% | 0.95 |
-| ast | 20 | 100% | 81% | 33% | 0.94 |
-| hybrid | 20 | 100% | 99% | 30% | 0.91 |
+| ast | 20 | 100% | 81% | 28% | 0.91 |
+| hybrid | 20 | 100% | 99% | 29% | 0.86 |
 | graph | 20 | 80% | 76% | 40% | 0.68 |
 
 #### Semantic questions (8)
@@ -139,8 +143,8 @@ the metric that separates the configs. Graph-only hit-rate was 80%.
 | config | n | hit | recall | precision | MRR |
 |---|---|---|---|---|---|
 | naive | 8 | 100% | 100% | 16% | 0.94 |
-| ast | 8 | 100% | 100% | 23% | 1.00 |
-| hybrid | 8 | 100% | 100% | 15% | 0.94 |
+| ast | 8 | 100% | 100% | 19% | 1.00 |
+| hybrid | 8 | 100% | 100% | 14% | 0.85 |
 | graph | 8 | 63% | 63% | 7% | 0.38 |
 
 #### Structural questions (8)
@@ -148,8 +152,8 @@ the metric that separates the configs. Graph-only hit-rate was 80%.
 | config | n | hit | recall | precision | MRR |
 |---|---|---|---|---|---|
 | naive | 8 | 100% | 97% | 38% | 0.94 |
-| ast | 8 | 100% | 68% | 38% | 0.84 |
-| hybrid | 8 | 100% | 100% | 48% | 0.84 |
+| ast | 8 | 100% | 68% | 35% | 0.84 |
+| hybrid | 8 | 100% | 100% | 46% | 0.85 |
 | graph | 8 | 88% | 88% | 81% | 0.88 |
 
 #### Cross-file questions (4)
@@ -157,8 +161,8 @@ the metric that separates the configs. Graph-only hit-rate was 80%.
 | config | n | hit | recall | precision | MRR |
 |---|---|---|---|---|---|
 | naive | 4 | 100% | 88% | 39% | 1.00 |
-| ast | 4 | 100% | 69% | 43% | 1.00 |
-| hybrid | 4 | 100% | 94% | 26% | 1.00 |
+| ast | 4 | 100% | 69% | 36% | 0.88 |
+| hybrid | 4 | 100% | 94% | 26% | 0.88 |
 | graph | 4 | 100% | 81% | 24% | 0.88 |
 
 ### Where each config missed (recall < 1)
@@ -170,15 +174,15 @@ the metric that separates the configs. Graph-only hit-rate was 80%.
 | hybrid | c01 only (missing `middleware/authMiddleware.js`) |
 | graph | s02, s04, s08, t08 (zero hits), c01, c04 |
 
-At k=10 naive drops to 2 imperfect questions, ast stays at 8, hybrid and graph are unchanged.
+At k=10 naive drops to 2 imperfect questions (t06, c01), ast stays at 8, hybrid (c01) and graph are unchanged.
 
 Average distinct files retrieved per question:
 
 | Config | k=5 | k=10 |
 |---|---|---|
 | naive | 4.0 | 7.0 |
-| ast | 3.0 | 4.8 |
-| hybrid | 6.8 | 8.1 |
+| ast | 3.2 | 5.5 |
+| hybrid | 6.8 | 8.2 |
 | graph | 5.9 | 5.9 |
 
 ## 5. Findings
@@ -186,23 +190,71 @@ Average distinct files retrieved per question:
 1. **Hybrid retrieval clearly wins.** Recall 99% at both k, versus 80-83% (k=5) for vector-only.
    On structural questions hybrid reaches 100% recall@5 against 72% (naive) and 68% (ast).
 2. **AST chunking did not beat naive chunking at file level on this corpus.** At k=10, recall was
-   81% (ast) vs 96% (naive). AST creates many small chunks per file, so the top-k chunks cover fewer
-   distinct files (3.0 vs 4.0 at k=5). AST did have the best precision at k=5 (54% vs 40%).
+   81% (ast) vs 96% (naive). AST creates more, smaller chunks, so the top-k chunks cover fewer
+   distinct files (3.2 vs 4.0 at k=5). AST did have the best precision of the vector configs at k=5
+   (46% vs 40%).
 3. **The file-level metric cannot see AST chunking's actual purpose** (not cutting a function in half
-   inside a chunk). This result is not evidence that AST chunking is worse; answer quality (Phase 4C)
+   inside a chunk). This result is not evidence that AST chunking is worse; answer quality (section 6)
    is where its benefit should show if it exists.
 4. **Hybrid's recall edge is partly structural.** A graph document surfaces several files at once, so
-   hybrid returns 6.8 distinct files at k=5 versus 3.0 for ast. Its precision and recall are not a
+   hybrid returns 6.8 distinct files at k=5 versus 3.2 for ast. Its precision and recall are not a
    like-for-like comparison with vector-only configs.
 5. **Graph-only fails where it should.** Zero hits on semantic questions s02, s04, s08 and on t08
    (`jwt.verify`, a library call with no definition in the repo). Hybrid covers these via the vector path,
    which justifies the hybrid design.
 6. **Ensemble weighting is untested.** Hybrid used fixed 0.5/0.5 weights; no tuning was done.
 
+### 5.1 Comment-chunk fix: before and after
+
+The first AST chunker emitted comments as separate chunks: 14 of 64 chunks (22%) were comment-only
+(e.g. `// 2 - Create a Post`) and 21 were under 60 characters. The hypothesis was that these wasted
+fixed-k retrieval slots and explained part of AST's lower recall. The chunker now folds comments that
+precede a function or class into that chunk, keeps same-line trailing comments with their statement,
+and keeps comments before simple statements in the setup group (12 unit tests,
+`src/ingest/chunkCode.test.js`). It also now computes the setup chunk's end line from its last
+statement instead of the next function's start. The AST index was rebuilt and the retrieval eval
+re-run.
+
+| | Before | After |
+|---|---|---|
+| AST chunks | 64 | 50 |
+| Comment-only chunks | 14 | 0 |
+| Chunks under 60 chars | 21 | 7 |
+
+| Retrieval eval | k=5 before | k=5 after | k=10 before | k=10 after |
+|---|---|---|---|---|
+| ast recall | 80% | 80% | 81% | 81% |
+| ast precision | 54% | 46% | 33% | 28% |
+| ast MRR | 0.94 | 0.91 | 0.94 | 0.91 |
+| ast avg distinct files | 3.0 | 3.2 | 4.8 | 5.5 |
+| hybrid recall | 99% | 99% | 99% | 99% |
+| hybrid MRR | 0.93 | 0.90 | 0.91 | 0.86 |
+| naive (unchanged) recall | 83% | 83% | 96% | 96% |
+
+- **The hypothesis was not supported for recall.** AST recall is identical before and after, at every
+  k and for every question type. Coverage of distinct files went up (4.8 to 5.5 at k=10) but the extra
+  files were not the expected ones, so precision and MRR dropped slightly.
+- **The files AST still misses are mostly cross-file relationships** (who calls `protect`, who imports
+  `authController`, where `followById` is used). Similarity search over code text cannot retrieve
+  these regardless of how the code is chunked, which is what the graph retriever is for.
+- **Why naive still wins on recall at k=10 is not verified.** A plausible explanation is that its
+  coarse 1000-character chunks cover several route handlers each and so mention many entities at once;
+  this was not tested.
+- **The fix still matters for answers:** it makes the real `createPost` chunk retrievable.
+- **`c01` re-run (cited prompt, post-fix index):** the answer now describes the real flow: it cites
+  `controller/postController.js (lines 21-41)` (correct range) and correctly states that `createPost`
+  rejects empty content with a 400, builds a `Post` with the user's id as creator, saves it, and
+  updates the user's `posts`. Remaining defects: one unsupported inference ("we can infer
+  `routes/postRoutes.js`..."), one imprecise endpoint (`/posts` instead of `/posts/createPost`), and
+  it omits the `protect` middleware. Under the pre-fix index the same question produced an answer
+  about the wrong feature with 6 defects. Single sample, one question; per-answer notes in
+  `src/eval/answers/review.md`. The other 9 reviewed answers were not regenerated against the new index.
+
 ## 6. Answer quality — Phase 4C
 
 Manual claim-by-claim review of 10 generated answers (3 semantic, 4 structural, 3 cross-file) under two
-prompts, plus automatic citation checks. Full per-answer notes, the defect rubric and a spot-check
+prompts, plus automatic citation checks. These answers were generated **before** the comment-chunk fix
+(section 5.1), against the 64-chunk AST index. Full per-answer notes, the defect rubric and a spot-check
 list: `src/eval/answers/review.md`. Same model (`llama3.1:8b`), same hybrid retrieval (k=5), one
 sample per question.
 
@@ -245,10 +297,9 @@ Findings:
 4. **`c01` failed under both prompts because of retrieval, not generation.** The real `createPost`
    function was never retrieved; a comment-only chunk (`// 2 - Create a Post`) took its slot, and the
    model answered about comments or speculated. Prompting cannot fix missing context.
-5. **Comment-only chunks are a measurable AST chunker problem:** 14 of 64 AST chunks (22%) contain only
-   a comment and 21 are under 60 characters (naive: 0). This likely explains part of AST's lower
-   distinct-file coverage in section 4 and the `c01` failure. Fix (not yet done): attach leading
-   comments to the declaration that follows, then re-index and re-run the retrieval eval.
+5. **Comment-only chunks caused the `c01` retrieval failure.** 14 of the 64 AST chunks (22%) were
+   comment-only. The fix and its retrieval-eval effect are in section 5.1; the regenerated `c01` answer
+   is below.
 6. **Generation time.** Legacy averaged 135s per answer and cited 288s, but the cited run overlapped
    with other work on the same CPU-only machine, so the difference is not a clean measurement of the
    prompt.

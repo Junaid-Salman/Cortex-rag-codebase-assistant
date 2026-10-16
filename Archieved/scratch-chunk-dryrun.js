@@ -1,0 +1,10 @@
+import fs from "fs";
+import { loadRepo } from "../src/ingest/loadRepo.js";
+import { chunkCode } from "../src/ingest/chunkCode.js";
+const dir = "/home/codingcops/Documents/Projects/Social-Network-Backend";
+const all = [];
+for (const f of await loadRepo(dir)) for (const c of chunkCode(fs.readFileSync(f, "utf-8"), f)) all.push({ f: f.replace(dir + "/", ""), ...c });
+const commentOnly = all.filter((c) => c.text.trim().split("\n").every((l) => /^\s*(\/\/|\/\*|\*|$)/.test(l)));
+console.log(`chunks: ${all.length} | comment-only: ${commentOnly.length} | under 60 chars: ${all.filter((c) => c.text.trim().length < 60).length}`);
+const cp = all.find((c) => c.f === "controller/postController.js" && c.text.includes("createPost"));
+console.log("createPost chunk:", cp.startLine + "-" + cp.endLine, JSON.stringify(cp.text.slice(0, 60)));
