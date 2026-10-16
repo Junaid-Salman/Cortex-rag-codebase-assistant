@@ -1,0 +1,651 @@
+{
+  "repo": "social-network",
+  "promptVersion": "legacy",
+  "model": "llama3.1:8b",
+  "answers": [
+    {
+      "id": "s02",
+      "type": "semantic",
+      "question": "How does the server verify a JWT and reject requests that are not authenticated?",
+      "expectedFiles": [
+        "middleware/authMiddleware.js"
+      ],
+      "seconds": 106,
+      "answer": "The server verifies a JWT using the `jwt.verify()` function in the `authMiddleware.js` file (line 10). Specifically, it uses the token from the request headers (`req.headers.authorization?.split(\" \")[1]`) and verifies it against the secret key stored in an environment variable (`process.env.JWT_SECRET`). If verification fails or if no token is provided, it returns a 401 response with an error message.\n\nFile path: `middleware/authMiddleware.js`",
+      "context": [
+        {
+          "source": "middleware/authMiddleware.js",
+          "startLine": 3,
+          "endLine": 18,
+          "files": null,
+          "text": "const protect = async( req, res, next ) => {\n\n    const token = req.headers.authorization?.split(\" \")[1];\n  if (!token) {\n    return res.status(401).json({ message: \"Not authorized, no token\" });\n  }\n\n  try {\n    const decoded = jwt.verify(token, process.env.JWT_SECRET);\n    req.user = decoded;\n    next();\n  } catch (error) {\n    return res.status(401).json({ message: \"Token verification failed\" });\n  }\n\n}"
+        },
+        {
+          "source": "server.js",
+          "startLine": null,
+          "endLine": null,
+          "files": [
+            "server.js"
+          ],
+          "text": "File server.js imports:\n- express\n- cors\n- dotenv\n- ./config/db\n- ./routes/authRoutes\n- ./routes/postRoutes\n- ./routes/commentRoutes\n- ./routes/followRoutes\n- ./routes/likeRoutes\n\nFiles that import server.js:\n(no other indexed file imports it)"
+        },
+        {
+          "source": "controller/authController.js",
+          "startLine": 29,
+          "endLine": 43,
+          "files": null,
+          "text": "exports.login = async (req, res) => {\n    const { email, password } = req.body;\n    try {\n        const user = await User.findOne({ email });\n        if (!user) return res.status(400).json({ message: \"Invalid credentials\" });\n\n        const isMatch = await bcrypt.compare(password, user.password);\n        if (!isMatch) return res.status(400).json({ message: \"Invalid credentials\" });\n\n        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: \"1h\" });\n        res.status(200).json({ message: \"Login Successful\", token });\n    } catch (error) {\n        res.status(500).json({ message: \"Server error\" });\n    }\n}"
+        },
+        {
+          "source": "controller/authController.js",
+          "startLine": 11,
+          "endLine": 26,
+          "files": null,
+          "text": "exports.register = async (req, res) => {\n    const { firstName, lastName, email, password, account } = req.body;\n    try {\n        const userExists = await User.findOne({ email });\n        if (userExists) return res.status(400).json({ message: \"User already exists\" });\n\n        const user = await User.create({ firstName, lastName, email, password, account });\n\n        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });\n\n        res.status(201).json({ message: \"User registered successfully\", token });\n    } catch (error) {\n        console.log(error);\n        res.status(500).json({ message: \"Server error\" });\n    }\n}"
+        },
+        {
+          "source": "middleware/authMiddleware.js",
+          "startLine": 1,
+          "endLine": 2,
+          "files": null,
+          "text": "const jwt = require('jsonwebtoken');"
+        },
+        {
+          "source": "controller/authController.js",
+          "startLine": 1,
+          "endLine": 5,
+          "files": null,
+          "text": "const express = require('express');\nconst User = require('../model/User');\nconst jwt = require('jsonwebtoken');\nconst bcrypt = require('bcryptjs');"
+        }
+      ]
+    },
+    {
+      "id": "s03",
+      "type": "semantic",
+      "question": "What happens when a user logs in with an email and password?",
+      "expectedFiles": [
+        "controller/authController.js"
+      ],
+      "seconds": 152,
+      "answer": "When a user logs in with an email and password, the following steps occur:\n\n1. The `findOne` method of the `User` model (in file `model/User.js`) is used to find a user document in the database where the `email` field matches the provided email. (`model/User.js`)\n2. If no user document is found with the matching email, a 400 status code response is sent back with an error message \"Invalid credentials\". (`controller/authController.js`)\n3. If a user document is found, the `bcrypt.compare` method (from `bcryptjs`) is used to compare the provided password with the hashed password stored in the user document's `password` field. (`model/User.js`, specifically the `userSchema.pre(\"save\", ...)` function)\n4. If the passwords do not match, a 400 status code response is sent back with an error message \"Invalid credentials\". (`controller/authController.js`)\n5. If the passwords match, a JSON Web Token (JWT) is generated using the `jwt.sign` method and the user's `_id` field as the payload. The token has an expiration time of 1 hour. (`controller/authController.js`)\n6. A 200 status code response is sent back with a success message \"Login Successful\" along with the generated JWT token. (`controller/authController.js`)",
+      "context": [
+        {
+          "source": "controller/authController.js",
+          "startLine": 28,
+          "endLine": 28,
+          "files": null,
+          "text": "//Login User"
+        },
+        {
+          "source": "model/User.js",
+          "startLine": null,
+          "endLine": null,
+          "files": [
+            "model/User.js",
+            "controller/authController.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "text": "File model/User.js imports:\n- mongoose\n- bcryptjs\n- ./Post\n- ../model/Comment\n\nFiles that import model/User.js:\n- controller/authController.js\n- controller/followController.js\n- controller/postController.js\n- model/Comment.js\n- model/FollowRequest.js\n- model/Post.js\n- routes/commentRoutes.js\n- routes/followRoutes.js\n- routes/likeRoutes.js\n- routes/postRoutes.js"
+        },
+        {
+          "source": "controller/authController.js",
+          "startLine": 29,
+          "endLine": 43,
+          "files": null,
+          "text": "exports.login = async (req, res) => {\n    const { email, password } = req.body;\n    try {\n        const user = await User.findOne({ email });\n        if (!user) return res.status(400).json({ message: \"Invalid credentials\" });\n\n        const isMatch = await bcrypt.compare(password, user.password);\n        if (!isMatch) return res.status(400).json({ message: \"Invalid credentials\" });\n\n        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: \"1h\" });\n        res.status(200).json({ message: \"Login Successful\", token });\n    } catch (error) {\n        res.status(500).json({ message: \"Server error\" });\n    }\n}"
+        },
+        {
+          "source": "controller/authController.js",
+          "startLine": 11,
+          "endLine": 26,
+          "files": null,
+          "text": "exports.register = async (req, res) => {\n    const { firstName, lastName, email, password, account } = req.body;\n    try {\n        const userExists = await User.findOne({ email });\n        if (userExists) return res.status(400).json({ message: \"User already exists\" });\n\n        const user = await User.create({ firstName, lastName, email, password, account });\n\n        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });\n\n        res.status(201).json({ message: \"User registered successfully\", token });\n    } catch (error) {\n        console.log(error);\n        res.status(500).json({ message: \"Server error\" });\n    }\n}"
+        },
+        {
+          "source": "model/User.js",
+          "startLine": 20,
+          "endLine": 25,
+          "files": null,
+          "text": "userSchema.pre(\"save\", async function (next) {\n    if (!this.isModified(\"password\")) return next();\n    const salt = await bcrypt.genSalt(10);\n    this.password = await bcrypt.hash(this.password, salt);\n    next();\n  });"
+        },
+        {
+          "source": "controller/followController.js",
+          "startLine": 20,
+          "endLine": 21,
+          "files": null,
+          "text": "// 2- Get all accounts that user is following"
+        }
+      ]
+    },
+    {
+      "id": "s06",
+      "type": "semantic",
+      "question": "How does editing an existing post work and what authorization check is done?",
+      "expectedFiles": [
+        "controller/postController.js"
+      ],
+      "seconds": 175,
+      "answer": "Editing an existing post works as follows:\n\n1. The `modifyPost` function in the `postController.js` file (controller/postController.js) is called with a request to edit a post.\n2. It extracts the `postId` from the request parameters (req.params.id).\n3. It uses this `postId` to find the corresponding Post document in the database using `Post.findById(postId)` (model/Post.js). The result is stored in the `postToEdit` variable.\n4. If the `creator` of the post does not match the `id` of the currently logged-in user (`req.user.id`), it returns a 400 error response with a message indicating that the user is not authorized to edit the post (controller/postController.js).\n5. If the request body contains new content, it updates the `content` field of the `postToEdit` document.\n6. It then attempts to save the updated `postToEdit` document to the database using `await postToEdit.save()` (model/Post.js). If successful, it returns a JSON response with a success message and the updated post.\n\nThe authorization check is done by comparing the `creator` field of the post with the `id` of the currently logged-in user. This ensures that only the original creator of the post can edit it.",
+      "context": [
+        {
+          "source": "controller/postController.js",
+          "startLine": 65,
+          "endLine": 85,
+          "files": null,
+          "text": "exports.modifyPost = async (req, res) => {\n    const postId = req.params.id;\n\n    const postToEdit = await Post.findById(postId);\n\n    if (postToEdit.creator != req.user.id) {\n        return res.status(400).json({ message: 'User not Authorized to delete post!' });\n    }\n\n    if (req.body.content != null) {\n        postToEdit.content = req.body.content\n    }\n\n    try {\n        await postToEdit.save();\n        res.json({ message: 'Post Updated Successfully', postToEdit });\n    } catch (err) {\n        res.status(400).json({ message: err.message });\n    }\n\n}"
+        },
+        {
+          "source": "model/Post.js",
+          "startLine": null,
+          "endLine": null,
+          "files": [
+            "model/Post.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "server.js"
+          ],
+          "text": "File model/Post.js imports:\n- mongoose\n- ./User\n- ../model/Comment\n\nFiles that import model/Post.js:\n- controller/followController.js\n- controller/postController.js\n- model/Comment.js\n- model/User.js\n- routes/commentRoutes.js\n- routes/followRoutes.js\n- routes/likeRoutes.js\n- routes/postRoutes.js\n- server.js"
+        },
+        {
+          "source": "controller/postController.js",
+          "startLine": 45,
+          "endLine": 61,
+          "files": null,
+          "text": "exports.deletePost = async (req, res) => {\n\n    const postId = req.params.id;\n\n    const postOwnerCheck = await Post.findById(postId);\n\n    if (postOwnerCheck.creator != req.user.id) {\n        return res.json({ message: 'User not authorized to delete post' });\n    }\n\n    try {\n        await Post.findByIdAndDelete(postId);\n        res.json({ message: 'Post Deleted Successfully!' })\n    } catch (err) {\n        res.json({ message: err.message });\n    }\n}"
+        },
+        {
+          "source": "controller/postController.js",
+          "startLine": 23,
+          "endLine": 41,
+          "files": null,
+          "text": "exports.createPost = async (req, res) => {\n\n    if (!req.body.content) {\n        return res.status(400).json({ message: 'No Content Provided in Post.' })\n    }\n\n    const post = new Post({\n        content: req.body.content,\n        creator: req.user.id,\n    });\n\n    try {\n        const newPost = await post.save();\n        await User.findByIdAndUpdate(req.user.id, { $addToSet: { posts: newPost._id } }, { new: true })\n        res.json(newPost);\n    } catch (err) {\n        res.json({ message: err.message });\n    }\n}"
+        },
+        {
+          "source": "routes/commentRoutes.js",
+          "startLine": 14,
+          "endLine": 39,
+          "files": null,
+          "text": "router.post( '/PostComment/:id',protect, async( req, res ) => {\n\n    const postID = req.params.id;\n\n    const newComment = new Comment({\n        content: req.body.content,\n        authorID: req.user.id,\n        postID: req.params.id\n    })\n\n    const postExist = await Post.findById(postID);\n\n    if(!postExist){\n        return res.status(404).json({ message: 'No Post Exists for given ID' });\n    }\n\n    try{\n        await newComment.save();\n        await Post.findByIdAndUpdate(postID, { $addToSet: { comments: newComment._id } }, {new: true});\n        await User.findByIdAndUpdate(req.user.id, { $addToSet: { comments: newComment._id } }, {new: true});\n        res.status(201).json({ message: 'Comment Posted Successfully!' })\n    }catch(err){\n        res.status(400).json({ message: err.message });\n    }\n\n} )"
+        },
+        {
+          "source": "controller/postController.js",
+          "startLine": 63,
+          "endLine": 64,
+          "files": null,
+          "text": "// 4 - Update own Post"
+        }
+      ]
+    },
+    {
+      "id": "t01",
+      "type": "structural",
+      "question": "What calls protect?",
+      "expectedFiles": [
+        "middleware/authMiddleware.js",
+        "routes/commentRoutes.js",
+        "routes/followRoutes.js",
+        "routes/likeRoutes.js",
+        "routes/postRoutes.js"
+      ],
+      "seconds": 182,
+      "answer": "The `protect` function is called at the following locations:\n\n- routes/commentRoutes.js (module scope, line 14)\n- routes/commentRoutes.js (module scope, line 56)\n- routes/commentRoutes.js (module scope, line 85)\n- routes/followRoutes.js (module scope, line 11)\n- routes/followRoutes.js (module scope, line 13)\n- routes/followRoutes.js (module scope, line 15)\n- routes/followRoutes.js (module scope, line 17)\n- routes/followRoutes.js (module scope, line 20)\n- routes/followRoutes.js (module scope, line 23)\n- routes/likeRoutes.js (module scope, line 8)\n- routes/likeRoutes.js (module scope, line 27)\n- routes/likeRoutes.js (module scope, line 45)\n- routes/likeRoutes.js (module scope, line 64)\n- routes/likeRoutes.js (module scope, line 82)\n- routes/likeRoutes.js (module scope, line 95)\n- routes/postRoutes.js (module scope, line 14)\n- routes/postRoutes.js (module scope, line 17)\n- routes/postRoutes.js (module scope, line 20)\n- routes/postRoutes.js (module scope, line 23)\n- routes/postRoutes.js (module scope, line 26)\n\n middleware/authMiddleware.js",
+      "context": [
+        {
+          "source": "middleware/authMiddleware.js",
+          "startLine": 20,
+          "endLine": 20,
+          "files": null,
+          "text": "module.exports = protect;"
+        },
+        {
+          "source": "middleware/authMiddleware.js",
+          "startLine": 3,
+          "endLine": 18,
+          "files": [
+            "middleware/authMiddleware.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "text": "Function `protect` is defined in middleware/authMiddleware.js (lines 3-18).\nReferenced/called at:\n- routes/commentRoutes.js (module scope, line 14)\n- routes/commentRoutes.js (module scope, line 56)\n- routes/commentRoutes.js (module scope, line 85)\n- routes/followRoutes.js (module scope, line 11)\n- routes/followRoutes.js (module scope, line 13)\n- routes/followRoutes.js (module scope, line 15)\n- routes/followRoutes.js (module scope, line 17)\n- routes/followRoutes.js (module scope, line 20)\n- routes/followRoutes.js (module scope, line 23)\n- routes/likeRoutes.js (module scope, line 8)\n- routes/likeRoutes.js (module scope, line 27)\n- routes/likeRoutes.js (module scope, line 45)\n- routes/likeRoutes.js (module scope, line 64)\n- routes/likeRoutes.js (module scope, line 82)\n- routes/likeRoutes.js (module scope, line 95)\n- routes/postRoutes.js (module scope, line 14)\n- routes/postRoutes.js (module scope, line 17)\n- routes/postRoutes.js (module scope, line 20)\n- routes/postRoutes.js (module scope, line 23)\n- routes/postRoutes.js (module scope, line 26)"
+        },
+        {
+          "source": "middleware/authMiddleware.js",
+          "startLine": 3,
+          "endLine": 18,
+          "files": null,
+          "text": "const protect = async( req, res, next ) => {\n\n    const token = req.headers.authorization?.split(\" \")[1];\n  if (!token) {\n    return res.status(401).json({ message: \"Not authorized, no token\" });\n  }\n\n  try {\n    const decoded = jwt.verify(token, process.env.JWT_SECRET);\n    req.user = decoded;\n    next();\n  } catch (error) {\n    return res.status(401).json({ message: \"Token verification failed\" });\n  }\n\n}"
+        },
+        {
+          "source": "routes/likeRoutes.js",
+          "startLine": 82,
+          "endLine": 93,
+          "files": null,
+          "text": "router.get( '/getLikedPosts', protect, async( req, res ) => {\n    const userId = req.user.id;\n    let likedPosts;\n\n    try{\n        likedPosts = await User.findById(userId).select('postLikes');\n        res.status(200).json({ message: 'All Liked Posts fetched', likedPosts });\n    }\n    catch(err){\n        return res.status(500).json({ message: err.message });\n    }\n} )"
+        },
+        {
+          "source": "routes/commentRoutes.js",
+          "startLine": 85,
+          "endLine": 96,
+          "files": null,
+          "text": "router.get( '/getUserComments', protect, async( req, res ) => {\n    const userId = req.user.id;\n    let allComments;\n\n    try{\n        allComments = await User.findById(userId).select('comments');\n        res.status(200).json({ message: 'All Comments by User fetched!', allComments});\n    }\n    catch(err){\n        res.status(500).json({ message: err.message });\n    }\n} )"
+        },
+        {
+          "source": "routes/likeRoutes.js",
+          "startLine": 95,
+          "endLine": 106,
+          "files": null,
+          "text": "router.get( '/getLikedComments', protect, async( req, res ) => {\n    const userId = req.user.id;\n    let likedComments;\n\n    try{\n        likedComments = await User.findById(userId).select('commentLikes');\n        res.status(200).json({ message: 'All Liked Comments fetched', likedComments });\n    }\n    catch(err){\n        return res.status(500).json({ message: err.message });\n    }\n} )"
+        }
+      ]
+    },
+    {
+      "id": "t03",
+      "type": "structural",
+      "question": "Where is followById used?",
+      "expectedFiles": [
+        "controller/followController.js",
+        "routes/followRoutes.js"
+      ],
+      "seconds": 46,
+      "answer": "The `followById` function is referenced and called at routes/followRoutes.js (module scope, line 20).",
+      "context": [
+        {
+          "source": "controller/followController.js",
+          "startLine": 67,
+          "endLine": 83,
+          "files": null,
+          "text": "exports.followById = async(req, res) => {\n    const idToFollow = req.params.id;\n\n    const userToFollow = await User.findById(idToFollow);\n\n    if(!userToFollow){\n        return res.status(404).json({ message: 'No Such User Exists' });\n    }\n\n    try{\n        await User.findByIdAndUpdate(req.user.id, { $addToSet: { following: idToFollow } }, {new: true});\n        await User.findByIdAndUpdate(req.params.id, { $addToSet: { followers: req.user.id } }, {new: true});\n        res.status(201).json({ message: 'User Followed', userToFollow });\n    }catch(err){\n        res.status(500).json({ message: err.message });\n    }\n}"
+        },
+        {
+          "source": "controller/followController.js",
+          "startLine": 67,
+          "endLine": 83,
+          "files": [
+            "controller/followController.js",
+            "routes/followRoutes.js"
+          ],
+          "text": "Function `followById` is defined in controller/followController.js (lines 67-83).\nReferenced/called at:\n- routes/followRoutes.js (module scope, line 20)"
+        },
+        {
+          "source": "controller/followController.js",
+          "startLine": 65,
+          "endLine": 66,
+          "files": null,
+          "text": "// 5- Follow Someone"
+        },
+        {
+          "source": "controller/followController.js",
+          "startLine": 20,
+          "endLine": 21,
+          "files": null,
+          "text": "// 2- Get all accounts that user is following"
+        },
+        {
+          "source": "controller/followController.js",
+          "startLine": 35,
+          "endLine": 36,
+          "files": null,
+          "text": "// 3- Get all accounts that follow the user"
+        },
+        {
+          "source": "controller/followController.js",
+          "startLine": 52,
+          "endLine": 63,
+          "files": null,
+          "text": "exports.removeFollower = async( req, res ) => {\n    const followerId = req.params.id;\n    const userId = req.user.id;\n\n    try{\n        await User.findByIdAndUpdate(userId, { $pull: { followers: followerId } }, { new: true });\n        res.status(200).json({ message: 'Follower Removed!' });\n    }catch(err){\n        res.status(500).json({ message: err.message });\n    }\n\n}"
+        }
+      ]
+    },
+    {
+      "id": "t06",
+      "type": "structural",
+      "question": "Which files import the User model?",
+      "expectedFiles": [
+        "model/User.js",
+        "routes/commentRoutes.js",
+        "routes/followRoutes.js",
+        "routes/likeRoutes.js",
+        "routes/postRoutes.js",
+        "controller/authController.js",
+        "controller/postController.js",
+        "controller/followController.js",
+        "model/Comment.js",
+        "model/Post.js",
+        "model/FollowRequest.js"
+      ],
+      "seconds": 103,
+      "answer": "The following files import the User model:\n\n* `controller/authController.js` (../model/User)\n* `controller/followController.js` (../model/User)\n* `controller/postController.js` (../model/User)\n* `model/Comment.js` (./../model/User)\n* `model/FollowRequest.js` (../model/User)\n* `model/Post.js` (./../model/User)\n* `routes/commentRoutes.js` (../model/User)\n* `routes/followRoutes.js` (../model/User)\n* `routes/likeRoutes.js` (../model/User)\n* `routes/postRoutes.js` (../model/User)\n\nReferences:\n- File: model/User.js\n- Files that import model/User.js: controller/authController.js, controller/followController.js, controller/postController.js, model/Comment.js, model/FollowRequest.js, model/Post.js, routes/commentRoutes.js, routes/followRoutes.js, routes/likeRoutes.js, routes/postRoutes.js",
+      "context": [
+        {
+          "source": "model/User.js",
+          "startLine": 27,
+          "endLine": 27,
+          "files": null,
+          "text": "module.exports = mongoose.model('User', userSchema);"
+        },
+        {
+          "source": "model/User.js",
+          "startLine": null,
+          "endLine": null,
+          "files": [
+            "model/User.js",
+            "controller/authController.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "text": "File model/User.js imports:\n- mongoose\n- bcryptjs\n- ./Post\n- ../model/Comment\n\nFiles that import model/User.js:\n- controller/authController.js\n- controller/followController.js\n- controller/postController.js\n- model/Comment.js\n- model/FollowRequest.js\n- model/Post.js\n- routes/commentRoutes.js\n- routes/followRoutes.js\n- routes/likeRoutes.js\n- routes/postRoutes.js"
+        },
+        {
+          "source": "controller/authController.js",
+          "startLine": 1,
+          "endLine": 5,
+          "files": null,
+          "text": "const express = require('express');\nconst User = require('../model/User');\nconst jwt = require('jsonwebtoken');\nconst bcrypt = require('bcryptjs');"
+        },
+        {
+          "source": "controller/followController.js",
+          "startLine": 1,
+          "endLine": 7,
+          "files": null,
+          "text": "const express = require('express');\nconst Comment = require('../model/Comment');\nconst Post = require('../model/Post');\nconst User = require('../model/User');\n// 1- Get all accounts except user"
+        },
+        {
+          "source": "controller/postController.js",
+          "startLine": 1,
+          "endLine": 6,
+          "files": null,
+          "text": "const express = require('express');\nconst Post = require('../model/Post');\nconst User = require('../model/User');\n// 1 - Display Users Own Posts on his 'My Posts' Page"
+        },
+        {
+          "source": "controller/followController.js",
+          "startLine": 35,
+          "endLine": 36,
+          "files": null,
+          "text": "// 3- Get all accounts that follow the user"
+        }
+      ]
+    },
+    {
+      "id": "t08",
+      "type": "structural",
+      "question": "Where is jwt.verify called?",
+      "expectedFiles": [
+        "middleware/authMiddleware.js"
+      ],
+      "seconds": 70,
+      "answer": "The `jwt.verify` function is called in the file `middleware/authMiddleware.js`, specifically in the `try` block of the `protect` function (line 9).\n\nFile path: middleware/authMiddleware.js line 9.",
+      "context": [
+        {
+          "source": "middleware/authMiddleware.js",
+          "startLine": 1,
+          "endLine": 2,
+          "files": null,
+          "text": "const jwt = require('jsonwebtoken');"
+        },
+        {
+          "source": "middleware/authMiddleware.js",
+          "startLine": 3,
+          "endLine": 18,
+          "files": null,
+          "text": "const protect = async( req, res, next ) => {\n\n    const token = req.headers.authorization?.split(\" \")[1];\n  if (!token) {\n    return res.status(401).json({ message: \"Not authorized, no token\" });\n  }\n\n  try {\n    const decoded = jwt.verify(token, process.env.JWT_SECRET);\n    req.user = decoded;\n    next();\n  } catch (error) {\n    return res.status(401).json({ message: \"Token verification failed\" });\n  }\n\n}"
+        },
+        {
+          "source": "controller/authController.js",
+          "startLine": 1,
+          "endLine": 5,
+          "files": null,
+          "text": "const express = require('express');\nconst User = require('../model/User');\nconst jwt = require('jsonwebtoken');\nconst bcrypt = require('bcryptjs');"
+        },
+        {
+          "source": "controller/authController.js",
+          "startLine": 11,
+          "endLine": 26,
+          "files": null,
+          "text": "exports.register = async (req, res) => {\n    const { firstName, lastName, email, password, account } = req.body;\n    try {\n        const userExists = await User.findOne({ email });\n        if (userExists) return res.status(400).json({ message: \"User already exists\" });\n\n        const user = await User.create({ firstName, lastName, email, password, account });\n\n        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });\n\n        res.status(201).json({ message: \"User registered successfully\", token });\n    } catch (error) {\n        console.log(error);\n        res.status(500).json({ message: \"Server error\" });\n    }\n}"
+        },
+        {
+          "source": "controller/authController.js",
+          "startLine": 29,
+          "endLine": 43,
+          "files": null,
+          "text": "exports.login = async (req, res) => {\n    const { email, password } = req.body;\n    try {\n        const user = await User.findOne({ email });\n        if (!user) return res.status(400).json({ message: \"Invalid credentials\" });\n\n        const isMatch = await bcrypt.compare(password, user.password);\n        if (!isMatch) return res.status(400).json({ message: \"Invalid credentials\" });\n\n        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: \"1h\" });\n        res.status(200).json({ message: \"Login Successful\", token });\n    } catch (error) {\n        res.status(500).json({ message: \"Server error\" });\n    }\n}"
+        }
+      ]
+    },
+    {
+      "id": "c01",
+      "type": "cross-file",
+      "question": "How does a request to create a post flow from the route to the database?",
+      "expectedFiles": [
+        "routes/postRoutes.js",
+        "controller/postController.js",
+        "middleware/authMiddleware.js",
+        "model/Post.js"
+      ],
+      "seconds": 219,
+      "answer": "The flow of creating a new post in your application can be found in multiple files. Here is how it happens:\n\n1. The `router.post( '/createPost', ...)` (not shown) in routes/postRoutes.js calls the function that handles creating a new Post.\n\n2. This function is likely defined somewhere, but not included in this snippet. It would call an async function to create a new post, passing relevant data such as content, authorID, etc.\n\n3. In `controller/postController.js`, there's no clear indication of how a post is created, so I'll assume the creation happens elsewhere (e.g., another controller or service).\n\nHowever, if we're looking at creating a comment on an existing post (`routes/commentRoutes.js`), then here's the flow:\n\n1. The request reaches `router.post( '/PostComment/:id', ...)` in routes/commentRoutes.js.\n\n2. The function defined for this route calls an async function to create a new Comment, passing relevant data such as content and authorID.\n\n3. The created comment is saved to the database using `await newComment.save()`.\n\n4. It then updates the existing Post by adding the newly created comment's ID to its comments array using `await Post.findByIdAndUpdate(postID, { $addToSet: { comments: newComment._id } }, {new: true})`.\n\n5. Lastly, it adds the new comment's ID to the author's comments array using `await User.findByIdAndUpdate(req.user.id, { $addToSet: { comments: newComment._id } }, {new: true});`\n\nIf you meant how a post is created directly (not through a comment), then I'd say that isn't clear from this snippet.",
+      "context": [
+        {
+          "source": "controller/postController.js",
+          "startLine": 21,
+          "endLine": 22,
+          "files": null,
+          "text": "// 2 - Create a Post"
+        },
+        {
+          "source": "model/Post.js",
+          "startLine": null,
+          "endLine": null,
+          "files": [
+            "model/Post.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/User.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js",
+            "server.js"
+          ],
+          "text": "File model/Post.js imports:\n- mongoose\n- ./User\n- ../model/Comment\n\nFiles that import model/Post.js:\n- controller/followController.js\n- controller/postController.js\n- model/Comment.js\n- model/User.js\n- routes/commentRoutes.js\n- routes/followRoutes.js\n- routes/likeRoutes.js\n- routes/postRoutes.js\n- server.js"
+        },
+        {
+          "source": "routes/likeRoutes.js",
+          "startLine": 8,
+          "endLine": 25,
+          "files": null,
+          "text": "router.post( '/likePost/:id', protect, async( req, res ) => {\n    const userId = req.user.id;\n    const postId = req.params.id;\n\n    const postExists = await Post.findById(postId);\n\n    if(!postExists){\n        return res.status(404).json({ message: 'Post does not exist' });\n    }\n\n    try{\n        await Post.findByIdAndUpdate(postId, { $addToSet: { likes: userId } }, {new: true});\n        await User.findByIdAndUpdate(userId, { $addToSet: { postLikes: postId } }, {new: true})\n        res.status(201).json({ message: 'Post Liked!' });\n    }catch(err){\n        res.status(500).json({ message: err.message });\n    }\n} )"
+        },
+        {
+          "source": "routes/likeRoutes.js",
+          "startLine": 27,
+          "endLine": 43,
+          "files": null,
+          "text": "router.post( '/unlikePost/:id', protect, async( req, res ) => {\n    const userId = req.user.id;\n    const postId = req.params.id;\n    const postExists = await Post.findById(postId);\n\n    if(!postExists){\n        return res.status(404).json({ message: 'Post does not exist' });\n    }\n\n    try{\n        await Post.findByIdAndUpdate(postId, { $pull: { likes: userId } }, {new: true});\n        await User.findByIdAndUpdate(userId, { $pull: { postLikes: postId } }, {new: true})\n        res.status(200).json({ message: 'Post Unliked!' });\n    }catch(err){\n        res.status(500).json({ message: err.message });\n    }\n} )"
+        },
+        {
+          "source": "routes/commentRoutes.js",
+          "startLine": 14,
+          "endLine": 39,
+          "files": null,
+          "text": "router.post( '/PostComment/:id',protect, async( req, res ) => {\n\n    const postID = req.params.id;\n\n    const newComment = new Comment({\n        content: req.body.content,\n        authorID: req.user.id,\n        postID: req.params.id\n    })\n\n    const postExist = await Post.findById(postID);\n\n    if(!postExist){\n        return res.status(404).json({ message: 'No Post Exists for given ID' });\n    }\n\n    try{\n        await newComment.save();\n        await Post.findByIdAndUpdate(postID, { $addToSet: { comments: newComment._id } }, {new: true});\n        await User.findByIdAndUpdate(req.user.id, { $addToSet: { comments: newComment._id } }, {new: true});\n        res.status(201).json({ message: 'Comment Posted Successfully!' })\n    }catch(err){\n        res.status(400).json({ message: err.message });\n    }\n\n} )"
+        },
+        {
+          "source": "routes/commentRoutes.js",
+          "startLine": 42,
+          "endLine": 53,
+          "files": null,
+          "text": "router.get( '/getCommentsByPost/:id', async( req, res ) => {\n    const postId  = req.params.id;\n    let allComments;\n\n    try{\n        allComments = await Comment.find( { postID: postId } ).populate('authorID');\n        res.status(200).json({ message: 'All Comments fetched for given Post', allComments });\n    }catch(err){\n        res.status(500).json({ message: err.message });\n    }\n\n} )"
+        }
+      ]
+    },
+    {
+      "id": "c02",
+      "type": "cross-file",
+      "question": "How is the feed of posts built for a user, and how do public and private accounts affect it?",
+      "expectedFiles": [
+        "controller/postController.js",
+        "model/User.js"
+      ],
+      "seconds": 148,
+      "answer": "Based on the provided code context:\n\nThe feed of posts for a user is built by combining two sets of posts in the `getAllFollowingPosts` function in `controller/postController.js` (1):\n\n- Posts from users that the current user is following (`allFollowingPosts.following`)\n- Public accounts (`publicUsers`)\n\nPublic accounts are fetched separately using `User.find({ account: 'Public' })` (in `controller/postController.js` 2). These public accounts have their posts populated using `populate({ path: 'posts', model: 'Post' })` in the same function.\n\nPrivate accounts do not affect the feed of posts directly, as they are not fetched or considered in this specific function. However, it's worth noting that private accounts are likely handled elsewhere in the codebase, possibly through authentication and authorization mechanisms.\n\nThe combination of these two sets of posts is done by using the spread operator (`...`) to create a new array `combinedPosts`, which is then processed to remove duplicates by converting the array to a map and back to an array (in `controller/postController.js` 3).\n\nSo, in summary:\n\n* The feed of posts for a user combines posts from users they are following with public accounts.\n* Public accounts have their posts populated separately using a separate query.\n* Private accounts do not directly affect the feed of posts in this specific function.",
+      "context": [
+        {
+          "source": "controller/postController.js",
+          "startLine": 89,
+          "endLine": 124,
+          "files": null,
+          "text": "exports.getAllFollowingPosts = async (req, res) => {\n    const userId = req.user.id;\n    let allFollowingPosts;\n\n    try {\n        allFollowingPosts = await User.findById(userId).select('following').populate({\n            path: 'following',\n            populate: {\n                path: 'posts',\n                model: 'Post'\n            }\n        });\n\n        // Fetch all users with a public account\n        const publicUsers = await User.find({ account: 'Public' }).populate({\n            path: 'posts',\n            model: 'Post'\n        });\n\n        // Combine both the results\n        const combinedPosts = [\n            ...allFollowingPosts.following,\n            ...publicUsers\n        ];\n\n        // Remove duplicates\n        const uniquePosts = Array.from(\n            new Map(combinedPosts.map(post => [post.toString(), post]))\n                .values()\n        );\n\n        res.status(200).json(uniquePosts)\n    } catch (err) {\n        res.status(500).json({ message: err.message });\n    }\n}"
+        },
+        {
+          "source": "model/User.js",
+          "startLine": null,
+          "endLine": null,
+          "files": [
+            "model/User.js",
+            "controller/authController.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "text": "File model/User.js imports:\n- mongoose\n- bcryptjs\n- ./Post\n- ../model/Comment\n\nFiles that import model/User.js:\n- controller/authController.js\n- controller/followController.js\n- controller/postController.js\n- model/Comment.js\n- model/FollowRequest.js\n- model/Post.js\n- routes/commentRoutes.js\n- routes/followRoutes.js\n- routes/likeRoutes.js\n- routes/postRoutes.js"
+        },
+        {
+          "source": "controller/followController.js",
+          "startLine": 20,
+          "endLine": 21,
+          "files": null,
+          "text": "// 2- Get all accounts that user is following"
+        },
+        {
+          "source": "controller/postController.js",
+          "startLine": 1,
+          "endLine": 6,
+          "files": null,
+          "text": "const express = require('express');\nconst Post = require('../model/Post');\nconst User = require('../model/User');\n// 1 - Display Users Own Posts on his 'My Posts' Page"
+        },
+        {
+          "source": "controller/followController.js",
+          "startLine": 35,
+          "endLine": 36,
+          "files": null,
+          "text": "// 3- Get all accounts that follow the user"
+        },
+        {
+          "source": "controller/postController.js",
+          "startLine": 87,
+          "endLine": 88,
+          "files": null,
+          "text": "// 5 - Fetch all Posts to be displayed on the Post Page"
+        }
+      ]
+    },
+    {
+      "id": "c04",
+      "type": "cross-file",
+      "question": "How does a logged-in user's token get checked on protected endpoints after login?",
+      "expectedFiles": [
+        "controller/authController.js",
+        "middleware/authMiddleware.js"
+      ],
+      "seconds": 147,
+      "answer": "According to the `middleware/authMiddleware.js` file (lines 1-12), the token is extracted from the `Authorization` header in the request and verified using JWT. \n\nHere's the specific code:\n```javascript\nconst token = req.headers.authorization?.split(\" \")[1];\nif (!token) {\n    return res.status(401).json({ message: \"Not authorized, no token\" });\n}\n\ntry {\n    const decoded = jwt.verify(token, process.env.JWT_SECRET);\n    req.user = decoded;\n    next();\n} catch (error) {\n    return res.status(401).json({ message: \"Token verification failed\" });\n}\n```\nThis `protect` middleware function is likely being called on protected endpoints by another file that imports it. The `routes/commentRoutes.js` file, for example, calls the `protect` middleware before allowing a logged-in user to fetch their comments (lines 4-13).",
+      "context": [
+        {
+          "source": "middleware/authMiddleware.js",
+          "startLine": 3,
+          "endLine": 18,
+          "files": null,
+          "text": "const protect = async( req, res, next ) => {\n\n    const token = req.headers.authorization?.split(\" \")[1];\n  if (!token) {\n    return res.status(401).json({ message: \"Not authorized, no token\" });\n  }\n\n  try {\n    const decoded = jwt.verify(token, process.env.JWT_SECRET);\n    req.user = decoded;\n    next();\n  } catch (error) {\n    return res.status(401).json({ message: \"Token verification failed\" });\n  }\n\n}"
+        },
+        {
+          "source": "model/User.js",
+          "startLine": null,
+          "endLine": null,
+          "files": [
+            "model/User.js",
+            "controller/authController.js",
+            "controller/followController.js",
+            "controller/postController.js",
+            "model/Comment.js",
+            "model/FollowRequest.js",
+            "model/Post.js",
+            "routes/commentRoutes.js",
+            "routes/followRoutes.js",
+            "routes/likeRoutes.js",
+            "routes/postRoutes.js"
+          ],
+          "text": "File model/User.js imports:\n- mongoose\n- bcryptjs\n- ./Post\n- ../model/Comment\n\nFiles that import model/User.js:\n- controller/authController.js\n- controller/followController.js\n- controller/postController.js\n- model/Comment.js\n- model/FollowRequest.js\n- model/Post.js\n- routes/commentRoutes.js\n- routes/followRoutes.js\n- routes/likeRoutes.js\n- routes/postRoutes.js"
+        },
+        {
+          "source": "controller/authController.js",
+          "startLine": 29,
+          "endLine": 43,
+          "files": null,
+          "text": "exports.login = async (req, res) => {\n    const { email, password } = req.body;\n    try {\n        const user = await User.findOne({ email });\n        if (!user) return res.status(400).json({ message: \"Invalid credentials\" });\n\n        const isMatch = await bcrypt.compare(password, user.password);\n        if (!isMatch) return res.status(400).json({ message: \"Invalid credentials\" });\n\n        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: \"1h\" });\n        res.status(200).json({ message: \"Login Successful\", token });\n    } catch (error) {\n        res.status(500).json({ message: \"Server error\" });\n    }\n}"
+        },
+        {
+          "source": "controller/authController.js",
+          "startLine": 29,
+          "endLine": 43,
+          "files": [
+            "controller/authController.js",
+            "routes/authRoutes.js"
+          ],
+          "text": "Function `login` is defined in controller/authController.js (lines 29-43).\nReferenced/called at:\n- routes/authRoutes.js (module scope, line 9)"
+        },
+        {
+          "source": "controller/authController.js",
+          "startLine": 28,
+          "endLine": 28,
+          "files": null,
+          "text": "//Login User"
+        },
+        {
+          "source": "controller/authController.js",
+          "startLine": 11,
+          "endLine": 26,
+          "files": null,
+          "text": "exports.register = async (req, res) => {\n    const { firstName, lastName, email, password, account } = req.body;\n    try {\n        const userExists = await User.findOne({ email });\n        if (userExists) return res.status(400).json({ message: \"User already exists\" });\n\n        const user = await User.create({ firstName, lastName, email, password, account });\n\n        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });\n\n        res.status(201).json({ message: \"User registered successfully\", token });\n    } catch (error) {\n        console.log(error);\n        res.status(500).json({ message: \"Server error\" });\n    }\n}"
+        },
+        {
+          "source": "routes/commentRoutes.js",
+          "startLine": 85,
+          "endLine": 96,
+          "files": null,
+          "text": "router.get( '/getUserComments', protect, async( req, res ) => {\n    const userId = req.user.id;\n    let allComments;\n\n    try{\n        allComments = await User.findById(userId).select('comments');\n        res.status(200).json({ message: 'All Comments by User fetched!', allComments});\n    }\n    catch(err){\n        res.status(500).json({ message: err.message });\n    }\n} )"
+        }
+      ]
+    }
+  ]
+}

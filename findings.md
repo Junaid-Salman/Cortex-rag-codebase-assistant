@@ -199,7 +199,65 @@ Average distinct files retrieved per question:
    which justifies the hybrid design.
 6. **Ensemble weighting is untested.** Hybrid used fixed 0.5/0.5 weights; no tuning was done.
 
-## 6. Earlier findings
+## 6. Answer quality — Phase 4C
+
+Manual claim-by-claim review of 10 generated answers (3 semantic, 4 structural, 3 cross-file) under two
+prompts, plus automatic citation checks. Full per-answer notes, the defect rubric and a spot-check
+list: `src/eval/answers/review.md`. Same model (`llama3.1:8b`), same hybrid retrieval (k=5), one
+sample per question.
+
+- **legacy** prompt: "cite the file path for each claim".
+- **cited** prompt: context blocks headed `File: path (lines a-b)` plus rules to copy paths/lines
+  exactly and never invent them.
+
+| | legacy | cited |
+|---|---|---|
+| Answers with no defect | 2 / 10 | 7 / 10 |
+| Total defects | 16 | 8 |
+| Total excluding `c01` (retrieval failure in both) | 14 | 2 |
+| Wrong file attributions | 4 | 0 |
+| Wrong line claims | 4 (5 citations) | 0 |
+| Wrong or invented details | 4 | 3 |
+| Unsupported speculation | 3 | 3 |
+| Omissions | 0 | 1 |
+| Avg answer length | 874 chars | 650 chars |
+
+Automatic citation checker (`src/eval/checkCitations.js`):
+
+| | legacy | cited |
+|---|---|---|
+| Invented file paths | 0 | 0 |
+| Line citations counted | 26 | 30 |
+| Flagged invalid | 2 | 0 |
+| Wrong line citations found manually | 5 | 0 |
+
+Findings:
+
+1. **Line-range headers plus explicit citation rules removed the wrong-file and wrong-line errors** in
+   this sample: 4 misattributions and 4 wrong line claims with the legacy prompt, none with the cited
+   prompt. All 30 line citations in the cited answers are correct.
+2. **Part of the gain is terseness.** Cited answers are about 26% shorter, so there were fewer claims
+   to get wrong; the cost shows up as an omission (`t01` dropped one of five call sites) and thinner
+   explanations.
+3. **The automatic checker is only a floor.** It caught 2 of the 5 wrong legacy line citations, because
+   a line inside a retrieved range passes even when it is off by one, and it cannot see wrong file
+   attributions or wrong details. It is still useful for confirming the cited prompt's citations.
+4. **`c01` failed under both prompts because of retrieval, not generation.** The real `createPost`
+   function was never retrieved; a comment-only chunk (`// 2 - Create a Post`) took its slot, and the
+   model answered about comments or speculated. Prompting cannot fix missing context.
+5. **Comment-only chunks are a measurable AST chunker problem:** 14 of 64 AST chunks (22%) contain only
+   a comment and 21 are under 60 characters (naive: 0). This likely explains part of AST's lower
+   distinct-file coverage in section 4 and the `c01` failure. Fix (not yet done): attach leading
+   comments to the declaration that follows, then re-index and re-run the retrieval eval.
+6. **Generation time.** Legacy averaged 135s per answer and cited 288s, but the cited run overlapped
+   with other work on the same CPU-only machine, so the difference is not a clean measurement of the
+   prompt.
+
+Caveats: 10 questions, one repo, one reviewer (the model assisting the user), one sample per question
+at default sampling temperature (individual answers vary run to run, e.g. an earlier CLI run of `t01`
+dropped `likeRoutes.js`). Counts are directional, not statistically significant.
+
+## 7. Earlier findings
 
 ### Phase 2 — naive vs AST chunking (`docs/phase2-chunking-comparison.md`)
 - Inconclusive: the test repo was a single 35-line file, so retrieval never had to choose between chunks.
@@ -215,22 +273,22 @@ Average distinct files retrieved per question:
   path / basename matching.
 - Semantic questions return no graph documents, so the graph path stays out of the way.
 
-## 7. Known limitations and observations
+## 8. Known limitations and observations
 
-- **Generation quality (llama3.1:8b).** Observed in end-to-end runs: dropped `likeRoutes.js` from the
-  `protect` answer even though it was in the retrieved context; invented line numbers for imports
-  (the graph does not record them); occasionally guessed file paths in Phase 2. Not yet measured.
+- **Generation quality (llama3.1:8b).** Measured in section 6 on 10 answers. Beyond those results:
+  it dropped `likeRoutes.js` from a `protect` answer in an earlier CLI run even though it was in the
+  retrieved context, and guessed file paths in Phase 2 before paths were passed to the prompt.
 - **Name-based call graph.** References are matched by name (`foo()` and `a.b.foo()` both record `foo`), so
   same-named functions in different files are not distinguished; "imported by" matches on basename.
-- **Graph file documents** have no line ranges (matters for Phase 4C citations).
+- **Graph file documents** have no line ranges, so answers about a file's imports can only cite the file path.
 - **Graph retriever** loads every `code_graph` row for the repo on each query; fine at 407 rows.
 - **Dataset size and bias.** 20 questions over one 15-file repo, written by reading the code with the
   retrieval design in mind (mitigated by hand verification against the source with grep).
 - **`t06`** ("which files import the User model") expects 11 files, so recall@5 is capped near 45% by design.
 
-## 8. Not yet measured
+## 9. Not yet measured
 
-- Answer correctness and hallucination rate (Phase 4C manual review).
-- Effect of line-range citations on invented line numbers.
+- Answer quality at scale: more than 10 questions, multiple samples per question, an independent reviewer.
+- The effect of fixing comment-only AST chunks on the retrieval eval and on `c01`.
 - Larger or multi-language repos.
 - Alternative ensemble weights, smaller/faster generation models.

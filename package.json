@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "node --test src/eval/metrics.test.js",
+    "test": "node --test src/eval/metrics.test.js src/chain/citations.test.js src/eval/citationCheck.test.js",
     "eval": "node src/eval/runEval.js"
   },
   "keywords": [],
