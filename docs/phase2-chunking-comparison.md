@@ -1,5 +1,14 @@
 # Phase 2 — Naive vs. AST-Aware Chunking: Comparison
 
+> **Update (Phase 4):** the conclusion below, that this comparison was inconclusive and needed a larger
+> repo, was followed up. The same comparison was re-run on a 15-file repo with 20 hand-verified questions
+> and measured recall, precision and MRR; see [`phase4-eval-results.md`](phase4-eval-results.md). Short
+> version: AST chunking did **not** beat naive chunking on file-level recall (81% vs 96% at k=10), though
+> it had better precision, and a file-level metric cannot show whether functions are split mid-body.
+> The citation defect noted at the bottom was fixed in Phase 4C (line-range citations; wrong file
+> attributions went from 4 to 0 in a 10-answer review). The text below is the original Phase 2 write-up,
+> left unchanged.
+
 **Test repo:** `PusherNotification` (single-file Express + Pusher app, `app.js`, ~35 lines)
 **Method:** Same repo indexed twice under separate Supabase tags — `test-repo-naive` (`RecursiveCharacterTextSplitter`, chunk size 1000 / overlap 100) and `test-repo-ast` (tree-sitter AST chunking) — then the same 5 fixed questions asked against each, `k=5` retrieval, `llama3.1:8b` generation.
 
