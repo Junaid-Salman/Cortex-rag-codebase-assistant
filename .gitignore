@@ -1,3 +1,6 @@
 node_modules/
 .env
 CLAUDE.md
+
+# Claude working files (local only)
+.claude/
